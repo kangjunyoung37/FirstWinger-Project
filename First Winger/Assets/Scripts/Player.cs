@@ -15,6 +15,15 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     Transform MainBGQuadTransform;
+
+    [SerializeField]
+    Transform FireTransform;
+
+    [SerializeField]
+    GameObject Bullet;
+
+    [SerializeField]
+    float BulletSpeed = 1;
     void Start()
     {
         
@@ -66,5 +75,13 @@ public class Player : MonoBehaviour
     public void OnCrash(Enemy enemy)
     {
         Debug.Log("OnCrash player" + enemy);
+    }
+    public void Fire()
+    {
+        GameObject go = Instantiate(Bullet);
+
+        Bullet bullet = go.GetComponent<Bullet>();
+        bullet.Fire(OwnerSide.Player, FireTransform.position, FireTransform.right, BulletSpeed);
+
     }
 }
