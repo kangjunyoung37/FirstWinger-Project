@@ -77,6 +77,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c504885094c4e4ca9c0d7fc2199419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHP: 100
+  CurrentHP: 0
+  Damage: 100
+  isDead: 0
+  crashDamage: 100
   MoveVector: {x: 0, y: 0, z: 0}
   Speed: 0
   boxCollider: {fileID: 0}

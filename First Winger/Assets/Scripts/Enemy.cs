@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Enemy : MonoBehaviour
+public class Enemy : Actor
 {
+    
     public enum State : int
     {
         None = -1,
@@ -44,15 +45,12 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     int FireRemainCount = 1;
 
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    int GamePoint = 10;
 
-    // Update is called once per frame
-    void Update()
-    {
 
+    protected override void UpdateActor()
+    {
         switch (CurrentState)
         {
             case State.None:
@@ -68,19 +66,15 @@ public class Enemy : MonoBehaviour
             case State.Battle:
                 UpdateBattle();
                 break;
-
-
         }
-
-        if(CurrentState == State.Appear || CurrentState == State.Disappear)
+        if (CurrentState == State.Appear || CurrentState == State.Disappear)
         {
             UpdateMove();
             UpdateSpeed();
         }
-
-
-
     }
+    // Update is called once per frame
+
 
     void UpdateSpeed()
     {
@@ -128,6 +122,7 @@ public class Enemy : MonoBehaviour
 
     void UpdateBattle()
     {
+        
         if(Time.time - LastBattleUpdateTime > 1.0f)
         {
             if(FireRemainCount > 0)
@@ -148,11 +143,18 @@ public class Enemy : MonoBehaviour
         
         Player player = other.GetComponentInParent<Player>();
         if (player)
-            player.OnCrash(this);
+        {
+            if (!player.IsDead)
+            {
+                player.OnCrash(this, CrashDamage);
+            }          
+            
+        }
+           
     }
-    public void OnCrash(Player player)
+    public override void OnCrash(Actor attacker, int damage)
     {
-        Debug.Log("OnCrash player" + player);
+       base.OnCrash(attacker, damage);
 
     }
     public void Fire()
@@ -160,7 +162,13 @@ public class Enemy : MonoBehaviour
         GameObject go = Instantiate(Bullet);
 
         Bullet bullet = go.GetComponent<Bullet>();
-        bullet.Fire(OwnerSide.Enemy, FireTransform.position, -FireTransform.right, BulletSpeed);
+        bullet.Fire(OwnerSide.Enemy, FireTransform.position, -FireTransform.right, BulletSpeed,Damage);
 
+    }
+    protected override void OnDead(Actor killer)
+    {
+        base.OnDead(killer);
+        SystemManager.Instance.GamePointAccumlator.Accumulate(GamePoint);
+        CurrentState = State.Dead;
     }
 }

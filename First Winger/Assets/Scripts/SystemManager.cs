@@ -11,15 +11,12 @@ public class SystemManager : MonoBehaviour
         get { return intance; }
     }
 
-    private void Awake()
+    [SerializeField]
+    EffectManager effectManager; 
+
+    public EffectManager EffectManager
     {
-        if(intance != null)
-        {
-            Debug.LogError("SystemManager error!");
-            Destroy(gameObject);
-            return;
-        }
-        intance = this;
+        get { return effectManager; }
     }
 
     [SerializeField]
@@ -33,6 +30,26 @@ public class SystemManager : MonoBehaviour
         }
     }
 
+    GamePointAccumlator gamePointAccumlator = new GamePointAccumlator();
+
+    public GamePointAccumlator GamePointAccumlator
+    {
+        get { return gamePointAccumlator; }
+    }
+
+
+    private void Awake()
+    {
+        if(intance != null)
+        {
+            Debug.LogError("SystemManager error!");
+            Destroy(gameObject);
+            return;
+        }
+        intance = this;
+        DontDestroyOnLoad(gameObject); 
+
+    }
 
     void Start()
     {

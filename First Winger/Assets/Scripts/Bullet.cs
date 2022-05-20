@@ -25,6 +25,9 @@ public class Bullet : MonoBehaviour
 
     float FiredTime;
 
+    [SerializeField]
+    int Damage = 1;
+
     void Start()
     {
         
@@ -49,13 +52,13 @@ public class Bullet : MonoBehaviour
 
 
     }
-    public void Fire(OwnerSide fireownerSide , Vector3 firePosition,Vector3 direction,float speed)
+    public void Fire(OwnerSide fireownerSide , Vector3 firePosition,Vector3 direction,float speed,int damage)
     {
         ownerSide = fireownerSide;
         transform.position = firePosition;
         MoveDirection = direction;
         Speed = speed; 
-
+        Damage = damage;
         NeddMove = true;
         FiredTime = Time.time;
 
@@ -75,6 +78,12 @@ public class Bullet : MonoBehaviour
     {
         if (Hited)
             return;
+        
+        if(collider.gameObject.layer == LayerMask.NameToLayer("EnemyBullet")||collider.gameObject.layer == LayerMask.NameToLayer("PlayerBullet"))
+        {
+            return;
+        }
+        
         Collider myCollider = GetComponentInChildren<Collider>();
         myCollider.enabled = false;
         Hited = true;
@@ -82,11 +91,17 @@ public class Bullet : MonoBehaviour
         if (ownerSide == OwnerSide.Player)
         {
             Enemy enemy = collider.GetComponentInParent<Enemy>();
+            if (enemy.IsDead)
+                return;
+            enemy.OnBulletHited(enemy,Damage);
 
         }
         else
         {
             Player player = collider.GetComponentInParent<Player>();
+            if (player.IsDead)
+                return;
+            player.OnBulletHited(player,Damage);
         }
     }
 

@@ -121,6 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171a713263dcbb346ac0f62ac0cfa887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHP: 100
+  CurrentHP: 0
+  Damage: 35
+  isDead: 0
+  crashDamage: 100
   CurrentState: -1
   TargetPosition: {x: 0, y: 0, z: 0}
   CurrentSpeed: 0
