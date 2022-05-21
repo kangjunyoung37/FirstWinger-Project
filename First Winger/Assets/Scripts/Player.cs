@@ -83,10 +83,18 @@ public class Player : Actor
     }
     public void Fire()
     {
+
+        if (IsDead)
+            return;
         GameObject go = Instantiate(Bullet);
 
         Bullet bullet = go.GetComponent<Bullet>();
         bullet.Fire(OwnerSide.Player, FireTransform.position, FireTransform.right, BulletSpeed,Damage);
 
+    }
+    protected override void OnDead(Actor killer)
+    {
+        base.OnDead(killer);
+        gameObject.SetActive(false);
     }
 }

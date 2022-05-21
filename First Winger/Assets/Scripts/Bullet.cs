@@ -103,6 +103,9 @@ public class Bullet : MonoBehaviour
                 return;
             player.OnBulletHited(player,Damage);
         }
+        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(0, transform.position);
+        go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        Disapper();
     }
 
     private void OnTriggerEnter(Collider other)
