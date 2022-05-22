@@ -28,6 +28,11 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     int Damage = 1;
 
+    public string FilePath
+    {
+        get;
+        set;
+    }
     void Start()
     {
         
@@ -103,7 +108,7 @@ public class Bullet : MonoBehaviour
                 return;
             player.OnBulletHited(player,Damage);
         }
-        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(0, transform.position);
+        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
         go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         Disapper();
     }
@@ -128,6 +133,6 @@ public class Bullet : MonoBehaviour
     }
     void Disapper()
     {
-        Destroy(gameObject);
+        SystemManager.Instance.BulletManager.Remove(this);
     }
 }

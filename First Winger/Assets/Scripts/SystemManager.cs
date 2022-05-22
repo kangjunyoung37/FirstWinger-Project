@@ -50,6 +50,40 @@ public class SystemManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); 
 
     }
+    PrefabCacheSystem enemyCacheSystem = new PrefabCacheSystem();
+    PrefabCacheSystem bulletCacheSystem = new PrefabCacheSystem();
+    PrefabCacheSystem effectCacheSystem = new PrefabCacheSystem();
+    [SerializeField]
+    EnemyManager enemyManager;
+
+    public EnemyManager EnemyManager
+    {
+        get { return enemyManager; }
+
+    }
+
+    [SerializeField]
+    BulletManager bulletManager;
+    public BulletManager BulletManager
+    {
+        get { return bulletManager; }
+    }
+
+
+
+    public PrefabCacheSystem EnemyCacheSystem
+    {
+        get { return enemyCacheSystem; }
+    }
+    public PrefabCacheSystem BulletCacheSystem
+    {
+        get { return bulletCacheSystem; }
+    }
+
+    public PrefabCacheSystem EffectCacheSystem
+    {
+        get { return effectCacheSystem; }
+    }
 
     void Start()
     {

@@ -34,9 +34,6 @@ public class Enemy : Actor
     Transform FireTransform;
 
     [SerializeField]
-    GameObject Bullet;
-
-    [SerializeField]
     float BulletSpeed = 1;
 
     float MoveStartTime = 0.0f;
@@ -48,7 +45,11 @@ public class Enemy : Actor
     [SerializeField]
     int GamePoint = 10;
 
-
+    public string FilePath
+    {
+        get;
+        set;
+    }
     protected override void UpdateActor()
     {
         switch (CurrentState)
@@ -158,18 +159,17 @@ public class Enemy : Actor
 
     }
     public void Fire()
-    {
-        GameObject go = Instantiate(Bullet);
-
-        Bullet bullet = go.GetComponent<Bullet>();
+    { 
+        Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.EnemyBulletIndex);
         bullet.Fire(OwnerSide.Enemy, FireTransform.position, -FireTransform.right, BulletSpeed,Damage);
-
     }
+
     protected override void OnDead(Actor killer)
     {
         base.OnDead(killer);
         SystemManager.Instance.GamePointAccumlator.Accumulate(GamePoint);
+        SystemManager.Instance.EnemyManager.RemoveEnemy(this);
         CurrentState = State.Dead;
-        Destroy(gameObject);
+       
     }
 }
