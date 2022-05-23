@@ -21,9 +21,15 @@ public class Player : Actor
 
     [SerializeField]
     float BulletSpeed = 1;
-        
- 
 
+
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
+        playerStatePanel.SetHP(CurrentHP, MaxHP);
+    }
     // Update is called once per frame
     protected override void UpdateActor()
     {
@@ -92,4 +98,12 @@ public class Player : Actor
         base.OnDead(killer);
         gameObject.SetActive(false);
     }
+
+    protected override void DecreaseHP(Actor attacker, int value)
+    {
+        base.DecreaseHP(attacker, value);
+        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
+        playerStatePanel.SetHP(CurrentHP, MaxHP);
+    }
+
 }

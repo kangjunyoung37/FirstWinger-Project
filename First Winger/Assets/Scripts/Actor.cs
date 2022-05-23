@@ -60,7 +60,7 @@ public class Actor : MonoBehaviour
         Debug.Log("OnCrash damage" + damage);
         DecreaseHP(attacker, damage);
     }
-    void DecreaseHP(Actor attacker, int value)
+    protected virtual void DecreaseHP(Actor attacker, int value)
     {
         if (isDead)
             return;
