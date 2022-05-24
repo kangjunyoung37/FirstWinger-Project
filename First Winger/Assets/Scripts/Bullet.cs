@@ -2,16 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum OwnerSide : int
-{
-    Player = 0,
-    Enemy
-}
 public class Bullet : MonoBehaviour
 {
     const float LifeTime = 15.0f;
-    // Start is called before the first frame update
-    OwnerSide ownerSide = OwnerSide.Player;
+
+    Actor Owner;
 
     [SerializeField]
     Vector3 MoveDirection = Vector3.zero;
@@ -57,9 +52,9 @@ public class Bullet : MonoBehaviour
 
 
     }
-    public void Fire(OwnerSide fireownerSide , Vector3 firePosition,Vector3 direction,float speed,int damage)
+    public void Fire(Actor Onwer , Vector3 firePosition,Vector3 direction,float speed,int damage)
     {
-        ownerSide = fireownerSide;
+        Owner = Onwer;
         transform.position = firePosition;
         MoveDirection = direction;
         Speed = speed; 
@@ -88,26 +83,19 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
-        
+        Actor actor = collider.GetComponentInParent<Actor>();
+        if (actor && actor.IsDead || actor.gameObject.layer == Owner.gameObject.layer)
+        {
+            return;
+        }
+
+        actor.OnBulletHited(Owner, Damage, transform.position);
+       
+
         Collider myCollider = GetComponentInChildren<Collider>();
         myCollider.enabled = false;
         Hited = true;
         NeddMove = false;
-        if (ownerSide == OwnerSide.Player)
-        {
-            Enemy enemy = collider.GetComponentInParent<Enemy>();
-            if (enemy.IsDead)
-                return;
-            enemy.OnBulletHited(enemy,Damage);
-
-        }
-        else
-        {
-            Player player = collider.GetComponentInParent<Player>();
-            if (player.IsDead)
-                return;
-            player.OnBulletHited(player,Damage);
-        }
         GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
         go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         Disapper();

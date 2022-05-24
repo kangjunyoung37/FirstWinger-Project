@@ -50,17 +50,17 @@ public class Actor : MonoBehaviour
     {
 
     }
-    public virtual void OnBulletHited(Actor attacker, int damage)
+    public virtual void OnBulletHited(Actor attacker, int damage,Vector3 hitPos)
     {
         Debug.Log("OnBulletHited" + damage);
-        DecreaseHP(attacker, damage);
+        DecreaseHP(attacker, damage, hitPos);
     }
-    public virtual void OnCrash(Actor attacker, int damage)
+    public virtual void OnCrash(Actor attacker, int damage, Vector3 hitPos)
     {
         Debug.Log("OnCrash damage" + damage);
-        DecreaseHP(attacker, damage);
+        DecreaseHP(attacker, damage, hitPos);
     }
-    protected virtual void DecreaseHP(Actor attacker, int value)
+    protected virtual void DecreaseHP(Actor attacker, int value,Vector3 damagePos)
     {
         if (isDead)
             return;

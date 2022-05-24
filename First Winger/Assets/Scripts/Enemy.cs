@@ -37,7 +37,7 @@ public class Enemy : Actor
     float BulletSpeed = 1;
 
     float MoveStartTime = 0.0f;
-    float LastBattleUpdateTime= 0.0f;
+    float LastActionUpdateTime= 0.0f;
 
     [SerializeField]
     int FireRemainCount = 1;
@@ -50,12 +50,16 @@ public class Enemy : Actor
         get;
         set;
     }
+    Vector3 AppearPoint;
+    Vector3 DisappearPoint;
     protected override void UpdateActor()
     {
         switch (CurrentState)
         {
             case State.None:
+                break;
             case State.Ready:
+                UpdateReady();
                 break;
             case State.Dead:
                 break;
@@ -98,12 +102,29 @@ public class Enemy : Actor
         if(CurrentState == State.Appear)
         {
             CurrentState = State.Battle;
-            LastBattleUpdateTime = Time.time;
+            LastActionUpdateTime = Time.time;
         }
         else //if (CurrentState == State.Disappear)
         {
             CurrentState = State.None;
         }
+    }
+    public void Reset(SquadronStruct data)
+    {
+        EnemyStruct enemyStruct = SystemManager.Instance.EnemyTable.GetEnemy(data.EnemyID);
+        CurrentHP = MaxHP = enemyStruct.MaxHP;
+        Damage = enemyStruct.Damage;
+        crashDamage = enemyStruct.CrashDamage;
+        BulletSpeed = enemyStruct.BulletSpeed;
+        FireRemainCount = enemyStruct.FireReaminCount;
+        GamePoint = enemyStruct.GamePoint;
+
+        AppearPoint = new Vector3(data.AppearPointX, data.AppearPointY,0);
+        DisappearPoint = new Vector3(data.DisappearPointX, data.DisappearPointY,0);
+        
+
+        CurrentState = State.Ready;
+        LastActionUpdateTime = Time.time;  
     }
     public void Appear(Vector3 targetPos)
     {
@@ -124,7 +145,7 @@ public class Enemy : Actor
     void UpdateBattle()
     {
         
-        if(Time.time - LastBattleUpdateTime > 1.0f)
+        if(Time.time - LastActionUpdateTime > 1.0f)
         {
             if(FireRemainCount > 0)
             {
@@ -133,10 +154,17 @@ public class Enemy : Actor
             }
             else
             {
-                Disappear(new Vector3(-15.0f, transform.position.y, transform.position.z));
+                Disappear(DisappearPoint);
             }
             
-            LastBattleUpdateTime = Time.time;
+            LastActionUpdateTime = Time.time;
+        }
+    }
+    void UpdateReady()
+    {
+        if(Time.time - LastActionUpdateTime > 1.0f)
+        {
+            Appear(AppearPoint);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -147,21 +175,24 @@ public class Enemy : Actor
         {
             if (!player.IsDead)
             {
-                player.OnCrash(this, CrashDamage);
+                BoxCollider boxCollider = (BoxCollider)other;
+                Vector3 crashPos = player.transform.position + boxCollider.center;
+                crashPos.x += boxCollider.size.x * 0.5f;
+                player.OnCrash(this, CrashDamage, crashPos);
             }          
             
         }
            
     }
-    public override void OnCrash(Actor attacker, int damage)
+    public override void OnCrash(Actor attacker, int damage, Vector3 crashPos)
     {
-       base.OnCrash(attacker, damage);
+       base.OnCrash(attacker, damage, crashPos);
 
     }
     public void Fire()
     { 
         Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.EnemyBulletIndex);
-        bullet.Fire(OwnerSide.Enemy, FireTransform.position, -FireTransform.right, BulletSpeed,Damage);
+        bullet.Fire(this, FireTransform.position, -FireTransform.right, BulletSpeed,Damage);
     }
 
     protected override void OnDead(Actor killer)
@@ -171,5 +202,11 @@ public class Enemy : Actor
         SystemManager.Instance.EnemyManager.RemoveEnemy(this);
         CurrentState = State.Dead;
        
+    }
+    protected override void DecreaseHP(Actor attacker, int value, Vector3 damagePos)
+    {
+        base.DecreaseHP(attacker, value,damagePos);
+        Vector3 damagePoint = damagePos + Random.insideUnitSphere * 0.5f;
+        SystemManager.Instance.DamageManager.Generate(DamageManager.EnemyDamageIndex, damagePoint* 0.5f, value,Color.magenta);
     }
 }

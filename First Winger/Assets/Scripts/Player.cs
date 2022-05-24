@@ -74,15 +74,17 @@ public class Player : Actor
         {
             if (!enemy.IsDead)
             {
-                enemy.OnCrash(this, CrashDamage);
+                BoxCollider boxCollider = (BoxCollider)other;
+                Vector3 crashPos = enemy.transform.position + boxCollider.center;
+                crashPos.x += boxCollider.size.x * 0.5f;
+                enemy.OnCrash(this, CrashDamage, crashPos);
             }
         }
            
     }
-    public override void OnCrash(Actor attacker, int damege)
+    public override void OnCrash(Actor attacker, int damege, Vector3 crashPos)
     {
-        
-        base.OnCrash(attacker, damege);
+        base.OnCrash(attacker, damege, crashPos);
     }
     public void Fire()
     {     
@@ -90,7 +92,7 @@ public class Player : Actor
             return;
 
         Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.PlayerBulletIndex);
-        bullet.Fire(OwnerSide.Player, FireTransform.position, FireTransform.right, BulletSpeed,Damage);
+        bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed,Damage);
 
     }
     protected override void OnDead(Actor killer)
@@ -99,11 +101,13 @@ public class Player : Actor
         gameObject.SetActive(false);
     }
 
-    protected override void DecreaseHP(Actor attacker, int value)
+    protected override void DecreaseHP(Actor attacker, int value, Vector3 damagePos)
     {
-        base.DecreaseHP(attacker, value);
+        base.DecreaseHP(attacker, value, damagePos);
         PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
         playerStatePanel.SetHP(CurrentHP, MaxHP);
+        Vector3 damagePoint = damagePos + Random.insideUnitSphere * 0.5f;
+        SystemManager.Instance.DamageManager.Generate(DamageManager.PlayerDamageIndex, damagePoint * 0.5f, value,Color.red);
     }
 
 }

@@ -18,20 +18,16 @@ public class EnemyManager : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            GenerateEnemy(0,new Vector3(15.0f, 0.0f, 0.0f));
-        }
     }
-    public bool GenerateEnemy(int index, Vector3 position)
+    public bool GenerateEnemy(EnemyGenerateData data)
     {
-        string filePath = enemyFiles[index].filePath;
-        GameObject go = SystemManager.Instance.EnemyCacheSystem.Archive(filePath);
-        go.transform.position = position;
+
+        string FilePath = SystemManager.Instance.s
+        GameObject go = SystemManager.Instance.EnemyCacheSystem.Archive(data.FilePath);
+        go.transform.position = data.GeneratePoint;
         Enemy enemy = go.GetComponent<Enemy>();
-        enemy.FilePath = filePath;
-        enemy.Appear(new Vector3(7.0f, 0.0f, 0.0f));
-        enemies.Add(enemy);
+        enemy.FilePath = data.FilePath;
+        enemy.Reset(data);
         return true;
     }
 
