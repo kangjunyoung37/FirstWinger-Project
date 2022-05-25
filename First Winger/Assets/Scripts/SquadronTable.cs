@@ -31,7 +31,7 @@ public class SquadronTable : TableLoader<SquadronStruct>
     void Update()
     {
         
-    }`
+    }
     protected override void AddData(SquadronStruct data)
     {
         tableDatas.Add(data);
@@ -45,6 +45,10 @@ public class SquadronTable : TableLoader<SquadronStruct>
             return default(SquadronStruct);//Struct값이 모두 0인걸 반환
         }
         return tableDatas[index]; 
+    }
+    public int GetCount()
+    {
+        return tableDatas.Count;
     }
 
 

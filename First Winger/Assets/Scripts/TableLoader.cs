@@ -32,12 +32,14 @@ public class TableLoader<TMarshalStruct> : MonoBehaviour
         bool fieldRead = false;
         while((line = reader.ReadLine()) != null) // 파일끝까지 읽으면서 파싱
         {
+            
             if (!fieldRead)
             {
                 fieldRead = true;
                 continue;
             }
             TMarshalStruct data = tableRecordParser.ParseRecordLine(line);//처음의 한 줄씩 읽음
+            
             AddData(data);
         }
     }

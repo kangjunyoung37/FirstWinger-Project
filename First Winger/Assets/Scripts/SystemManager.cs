@@ -12,32 +12,19 @@ public class SystemManager : MonoBehaviour
     }
 
     [SerializeField]
-    EffectManager effectManager; 
-
-    public EffectManager EffectManager
-    {
-        get { return effectManager; }
-    }
-
-    [SerializeField]
-    Player player;
-
-    public Player Hero
+    EnemyTable enemyTable;
+    public EnemyTable EnemyTable
     {
         get
         {
-            return player;
+           return enemyTable;
         }
     }
-
-    GamePointAccumlator gamePointAccumlator = new GamePointAccumlator();
-
-    public GamePointAccumlator GamePointAccumlator
+    BaseSceneMain currentSceneMain;
+    public BaseSceneMain CurrentSceneMain
     {
-        get { return gamePointAccumlator; }
+        set { currentSceneMain = value; }
     }
-
-
     private void Awake()
     {
         if(intance != null)
@@ -50,60 +37,21 @@ public class SystemManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); 
 
     }
-    PrefabCacheSystem damageCacheSystem = new PrefabCacheSystem();
-    PrefabCacheSystem enemyCacheSystem = new PrefabCacheSystem();
-    PrefabCacheSystem bulletCacheSystem = new PrefabCacheSystem();
-    PrefabCacheSystem effectCacheSystem = new PrefabCacheSystem();
-    
-    [SerializeField]
-    EnemyManager enemyManager;
-
-    public EnemyManager EnemyManager
-    {
-        get { return enemyManager; }
-
-    }
-
-    [SerializeField]
-    BulletManager bulletManager;
-    public BulletManager BulletManager
-    {
-        get { return bulletManager; }
-    }
-
-    [SerializeField]
-    DamageManager damageManager;
-    public DamageManager DamageManager
-    {
-        get { return damageManager; }
-    }
-
-    public PrefabCacheSystem EnemyCacheSystem
-    {
-        get { return enemyCacheSystem; }
-    }
-    public PrefabCacheSystem BulletCacheSystem
-    {
-        get { return bulletCacheSystem; }
-    }
-
-    public PrefabCacheSystem EffectCacheSystem
-    {
-        get { return effectCacheSystem; }
-    }
-    public PrefabCacheSystem DamageCacheSystem
-    {
-        get { return damageCacheSystem;  }
-    }
-
+   
     void Start()
     {
-        
+        BaseSceneMain baseSceneMain = GameObject.FindObjectOfType<BaseSceneMain>();
+        Debug.Log("OnSceneLoaded! " + baseSceneMain.name);
+        SystemManager.Instance.CurrentSceneMain = baseSceneMain;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public T GetCurrentSceneMain<T>() where T : BaseSceneMain
+    {
+        return currentSceneMain as T;
     }
 }

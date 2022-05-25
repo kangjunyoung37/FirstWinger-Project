@@ -38,6 +38,7 @@ public class EnemyTable : TableLoader<EnemyStruct>//public class TableLoader<TMa
         Debug.Log("data.Gamepoint" + data.GamePoint);
 
         tableDatas.Add(data.index, data);
+
     }
 
     public EnemyStruct GetEnemy(int index)

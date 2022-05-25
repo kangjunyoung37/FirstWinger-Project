@@ -96,7 +96,7 @@ public class Bullet : MonoBehaviour
         myCollider.enabled = false;
         Hited = true;
         NeddMove = false;
-        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
+        GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
         go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         Disapper();
     }
@@ -121,6 +121,6 @@ public class Bullet : MonoBehaviour
     }
     void Disapper()
     {
-        SystemManager.Instance.BulletManager.Remove(this);
+        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Remove(this);
     }
 }
