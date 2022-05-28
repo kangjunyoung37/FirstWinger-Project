@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Player : Actor
 {
+    const string PlayerHUDPath = "Prefabs/PlayerHUD";
     [SerializeField]
+    [SyncVar]
     Vector3 MoveVector = Vector3.zero;
+   
+    [SerializeField]
+    NetworkIdentity NetworkIdentity = null;
 
     [SerializeField]
     float Speed;
@@ -14,36 +20,104 @@ public class Player : Actor
     BoxCollider boxCollider;
 
     [SerializeField]
-    Transform MainBGQuadTransform;
-
-    [SerializeField]
     Transform FireTransform;
 
     [SerializeField]
     float BulletSpeed = 1;
 
+    InputController controller = new InputController();
 
+    [SerializeField]
+    [SyncVar]
+    bool Host = false;
 
+    [SerializeField]
+    Material ClientPlayerMaterial;
     protected override void Initialize()
     {
         base.Initialize();
-        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
-        playerStatePanel.SetHP(CurrentHP, MaxHP);
+        InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+        if (isLocalPlayer)
+            inGameSceneMain.Hero = this;
+       if(isServer && isLocalPlayer)
+        {
+            Host = true;
+            RpcSetHost();
+        }
+        
+        Transform startTrasnform;
+        if (Host)
+        {
+            startTrasnform = inGameSceneMain.PlayerStartTransform1;
+        }
+        else
+        {
+            startTrasnform = inGameSceneMain.PlayerStartTrasform2;
+            MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
+            meshRenderer.material = ClientPlayerMaterial;
+        }
+        SetPosition(startTrasnform.position);
+        if(actorInstanceID != 0)
+        {
+            inGameSceneMain.ActorManager.Regist(ActorInstanceID, this);
+        }
+        InitaializePlayerHUD();
     }
-    // Update is called once per frame
+   
+    void InitaializePlayerHUD()
+    {
+        InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+        GameObject go = Resources.Load<GameObject>(PlayerHUDPath);
+        GameObject goInstance = Instantiate<GameObject>(go, inGameSceneMain.DamageManager.CanvasTransform);
+        PlayerHUD playerHUD = goInstance.GetComponent<PlayerHUD>();
+        playerHUD.Intialize(this);
+    }
     protected override void UpdateActor()
     {
+        UpdateInput();
         UpdateMove();
     }
 
+    [ClientCallback]//자신의 클라이언트에서만 실행함
+    public void UpdateInput()
+    {
+        controller.UpdateInput();
+    }
     void UpdateMove()
     {
         if (MoveVector.sqrMagnitude == 0)
             return;
 
-        MoveVector = AdjustMoveVector(MoveVector);
+        if(isServer)
+        {
+            RpcMove(MoveVector); //Host플레이어일 경우  RPC로 보냄
+        }
+        else
+        {
+            CmdMove(MoveVector);//Client일 Cmd로 보냄
+            if (isLocalPlayer)
+            {
+                transform.position += AdjustMoveVector(MoveVector);
+            }
+        }
 
-        transform.position += MoveVector;   
+    }
+    [ClientRpc]
+    public void RpcMove(Vector3 moveVector)
+    {
+        this.MoveVector = moveVector;
+        transform.position += AdjustMoveVector(this.MoveVector);
+        base.SetDirtyBit(1);
+        this.MoveVector = Vector3.zero; //다른 플레이어가 보내면 Update를 통해 초기화가 안되므로 바로 초기화를 시켜줌
+    }
+    [Command]
+    public void CmdMove(Vector3 moveVector)
+    {
+        this.MoveVector = moveVector;
+        transform.position += AdjustMoveVector(this.MoveVector);
+        base.SetDirtyBit(1);//서버가 알 수 있도록 통보
+        this.MoveVector = Vector3.zero;//다른 플레이어가 보내면 Update를 통해 초기화가 안되므로 바로 초기화를 시켜줌
+
     }
     public void ProcessInput(Vector3 moveDirection)//
     {
@@ -52,16 +126,17 @@ public class Player : Actor
     }
     Vector3 AdjustMoveVector(Vector3 moveVector)
     {
+        Transform mainBGQuadTransform = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().MainBGQuadTransform;
         Vector3 result = Vector3.zero;
 
         result = boxCollider.transform.position + boxCollider.center + moveVector;
-        if (result.x - boxCollider.size.x * 0.5f < -MainBGQuadTransform.lossyScale.x * 0.5f)
+        if (result.x - boxCollider.size.x * 0.5f < -mainBGQuadTransform.localScale.x * 0.5f)
             moveVector.x = 0;
-        if (result.x + boxCollider.size.x * 0.5f > MainBGQuadTransform.lossyScale.x * 0.5f)
+        if (result.x + boxCollider.size.x * 0.5f > mainBGQuadTransform.localScale.x * 0.5f)
             moveVector.x = 0;
-        if (result.y - boxCollider.size.y * 0.5f < -MainBGQuadTransform.lossyScale.y * 0.5f)
+        if (result.y - boxCollider.size.y * 0.5f < -mainBGQuadTransform.localScale.y * 0.5f)
             moveVector.y = 0;
-        if (result.y + boxCollider.size.y * 0.5f > MainBGQuadTransform.lossyScale.y * 0.5f)
+        if (result.y + boxCollider.size.y * 0.5f > mainBGQuadTransform.localScale.y * 0.5f)
             moveVector.y = 0;
 
         return moveVector;
@@ -77,37 +152,49 @@ public class Player : Actor
                 BoxCollider boxCollider = (BoxCollider)other;
                 Vector3 crashPos = enemy.transform.position + boxCollider.center;
                 crashPos.x += boxCollider.size.x * 0.5f;
-                enemy.OnCrash(this, CrashDamage, crashPos);
+                enemy.OnCrash(CrashDamage, crashPos);
             }
         }
            
     }
-    public override void OnCrash(Actor attacker, int damege, Vector3 crashPos)
-    {
-        base.OnCrash(attacker, damege, crashPos);
-    }
     public void Fire()
     {     
+
         if (IsDead)
             return;
-
-        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
-        bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed,Damage);
-
+        if (Host)
+        {
+            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
+            bullet.Fire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
+        else
+        {
+            CmdFire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
     }
-    protected override void OnDead(Actor killer)
+    [Command]
+    public void CmdFire(int ownerIntanceId, Vector3 firePosition, Vector3 direction, float speed, int damage)
     {
-        base.OnDead(killer);
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
+        bullet.Fire(ownerIntanceId, firePosition, direction, speed, damage);
+        base.SetDirtyBit(1);
+    }
+    protected override void OnDead()
+    {
+        base.OnDead();
         gameObject.SetActive(false);
     }
 
-    protected override void DecreaseHP(Actor attacker, int value, Vector3 damagePos)
+    protected override void DecreaseHP(int value, Vector3 damagePos)
     {
-        base.DecreaseHP(attacker, value, damagePos);
-        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
-        playerStatePanel.SetHP(CurrentHP, MaxHP);
+        base.DecreaseHP(value, damagePos);
         Vector3 damagePoint = damagePos + Random.insideUnitSphere * 0.5f;
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().DamageManager.Generate(DamageManager.PlayerDamageIndex, damagePoint * 0.5f, value,Color.red);
     }
-
+    [ClientRpc]
+    public void RpcSetHost()
+    {
+        Host = true;
+        base.SetDirtyBit(1);
+    }
 }

@@ -51,11 +51,12 @@ public class SquadronManager : MonoBehaviour
         {
             return;
         }
-        if(Time.time - GameStartTime >= squadronScheduleTable.GetSquadronScheduleDataStruct(SquadronIndex).GenerateTime)
+        SquadronScheduleDataStruct data = squadronScheduleTable.GetSquadronScheduleDataStruct(SquadronIndex);
+        if(Time.time - GameStartTime >= data.GenerateTime)
         {
-            GenerateSquadron(squadronDatas[SquadronIndex]);
+            GenerateSquadron(squadronDatas[data.SquadronID]);
             SquadronIndex += 1;
-            if(SquadronIndex >= squadronDatas.Length)
+            if (SquadronIndex >= squadronScheduleTable.GetDataCount())
             {
                 AllSquadronGenerated();
                 return;

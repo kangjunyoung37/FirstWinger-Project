@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 3349601473869304986}
   - component: {fileID: 8927301006561953415}
   - component: {fileID: 710209296416184802}
+  - component: {fileID: 55703206314760798}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -131,10 +132,10 @@ MonoBehaviour:
   TargetPosition: {x: 0, y: 0, z: 0}
   CurrentSpeed: 0
   FireTransform: {fileID: 3197491734355138754}
-  Bullet: {fileID: 1633353340889972871, guid: 53a2503416b115448ba994a666a8ab9a, type: 3}
   BulletSpeed: 10
   FireRemainCount: 3
   GamePoint: 10
+  filePath: 
 --- !u!54 &710209296416184802
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -151,6 +152,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &55703206314760798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6773418351098889601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8258ea15b8f74c4889ce485d21cbbb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!1 &8148060645016203892
 GameObject:
   m_ObjectHideFlags: 0

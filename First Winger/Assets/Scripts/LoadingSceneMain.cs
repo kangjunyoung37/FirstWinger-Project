@@ -47,7 +47,32 @@ public class LoadingSceneMain : BaseSceneMain
     }
     void GotoNextScene()
     {
-        SceneController.Instance.LoadScene(SceneNameConstants.InGame);
+
+        NetworkConnectionifo info = SystemManager.Instance.Connectioninfo;
+        if (info.host)//호스트로 시작
+        {
+            Debug.Log("FW Start with host");
+            FWNetworkManager.singleton.StartHost();
+        }
+
+        else
+        {
+            Debug.Log("FW Start with Client");//클라이언트로 시작
+
+            if (!string.IsNullOrEmpty(info.IPAdress))
+            {
+                FWNetworkManager.singleton.networkAddress = info.IPAdress;
+            }
+
+            if(info.port != FWNetworkManager.singleton.networkPort)
+            {
+                FWNetworkManager.singleton.networkPort = info.port;
+            }
+
+            FWNetworkManager.singleton.StartClient();
+        }
+        //SceneController.Instance.LoadScene(SceneNameConstants.InGame);
+        //호스트로 동작을 함
         NextSceneCall = true;
     }
 }

@@ -1,36 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
     const float LifeTime = 15.0f;
 
-    Actor Owner;
+    [SyncVar]
+    [SerializeField]
+    int OwnerInstanceID;
 
+    [SyncVar]
     [SerializeField]
     Vector3 MoveDirection = Vector3.zero;
 
+    [SyncVar]
     [SerializeField]
     float Speed = 0.0f;
-
+    [SyncVar]
     bool NeddMove = false;
-
+   
+    [SyncVar]
     bool Hited = false;
-
+    
+    [SyncVar]
     float FiredTime;
-
+    
+    [SyncVar]
     [SerializeField]
     int Damage = 1;
 
+    [SyncVar]
+    [SerializeField]
+    string filePath;
+
     public string FilePath
     {
-        get;
-        set;
+        get { return filePath; }
+        set { filePath = value; }
     }
     void Start()
     {
-        
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+        {
+            InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+            transform.SetParent(inGameSceneMain.BulletManager.transform);
+            inGameSceneMain.BulletCacheSystem.Add(FilePath, gameObject);
+            gameObject.SetActive(false);
+
+        }
     }
 
     // Update is called once per frame
@@ -52,16 +71,18 @@ public class Bullet : MonoBehaviour
 
 
     }
-    public void Fire(Actor Onwer , Vector3 firePosition,Vector3 direction,float speed,int damage)
+    public void Fire(int ownerIntanceID , Vector3 firePosition,Vector3 direction,float speed,int damage)
     {
-        Owner = Onwer;
+
+        OwnerInstanceID = ownerIntanceID;
+        SetPosition(firePosition);
         transform.position = firePosition;
         MoveDirection = direction;
         Speed = speed; 
         Damage = damage;
         NeddMove = true;
         FiredTime = Time.time;
-
+        UpdateNetworkBullet();
     }
     Vector3 AdjustMove(Vector3 moveVector)
     {
@@ -83,13 +104,14 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
+        Actor owner = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().ActorManager.GetActor(OwnerInstanceID);
         Actor actor = collider.GetComponentInParent<Actor>();
-        if (actor && actor.IsDead || actor.gameObject.layer == Owner.gameObject.layer)
+        if (actor && actor.IsDead || actor.gameObject.layer == owner.gameObject.layer)
         {
             return;
         }
 
-        actor.OnBulletHited(Owner, Damage, transform.position);
+        actor.OnBulletHited(Damage, transform.position);
        
 
         Collider myCollider = GetComponentInChildren<Collider>();
@@ -122,5 +144,58 @@ public class Bullet : MonoBehaviour
     void Disapper()
     {
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Remove(this);
+    }
+    [ClientRpc]
+    public void RpcSetActive(bool value)
+    {
+        this.gameObject.SetActive(value);
+        base.SetDirtyBit(1);
+    }
+    public void SetPosition(Vector3 position)
+    {
+        if (isServer)
+        {
+            RpcSetPosition(position);
+        }
+        else
+        {
+            CmdSetPosition(position);
+            if(isLocalPlayer)
+                transform.position = position;
+        }
+    }
+    [Command]
+    public void CmdSetPosition(Vector3 position)
+    {
+        this.transform.position = position;
+        base.SetDirtyBit(1);
+    }
+    [ClientRpc]
+    public void RpcSetPosition(Vector3 position)
+    {
+        this.transform.position = position;
+        base.SetDirtyBit(1);
+    }
+    public void UpdateNetworkBullet()
+    {
+        if(isServer)
+        {
+            RpcUpdateNetworkBullet();
+        }
+        else
+        {
+            CmdUpdateNetworkBullet();
+        }
+    }
+    [Command]
+    public void CmdUpdateNetworkBullet()
+    {
+        base.SetDirtyBit(1);
+    }
+
+    [ClientRpc]
+    public void RpcUpdateNetworkBullet()
+    {
+        base.SetDirtyBit(1);
     }
 }

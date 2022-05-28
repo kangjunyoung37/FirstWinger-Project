@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour
     
     void Start()
     {
-        Prepare();
+        //Prepare();
     }
     [SerializeField]
     PrefabCacheData[] enemyFiles;
@@ -21,22 +21,27 @@ public class EnemyManager : MonoBehaviour
     }
     public bool GenerateEnemy(SquadronStruct data)
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)       
+            return true;
+        
 
         string FilePath = SystemManager.Instance.EnemyTable.GetEnemy(data.EnemyID).FilePath;
-
         GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.Archive(FilePath);
 
-        go.transform.position = new Vector3(data.GeneratePointX, data.GeneratePointY,0);
+        //go.transform.position = new Vector3(data.GeneratePointX, data.GeneratePointY,0);
+        
         Enemy enemy = go.GetComponent<Enemy>();
-        enemy.FilePath = FilePath;
+        enemy.SetPosition(new Vector3(data.GeneratePointX,data.GeneratePointY,0));
         enemy.Reset(data);
-
         enemies.Add(enemy);
         return true;
     }
 
     public bool RemoveEnemy(Enemy enemy)
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)       
+            return true;
+        
         if (!enemies.Contains(enemy))
         {
             Debug.LogError("no exist Enemy");
@@ -48,10 +53,13 @@ public class EnemyManager : MonoBehaviour
     }
     public void Prepare()
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)        
+            return;
+        
         for (int i = 0; i <enemyFiles.Length; i++)
         {
             GameObject go = enemyFactory.Load(enemyFiles[i].filePath);
-            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.GenerateCache(enemyFiles[i].filePath, go, enemyFiles[i].cacheCount);
+            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.GenerateCache(enemyFiles[i].filePath, go, enemyFiles[i].cacheCount,this.transform);
         } 
     }
 }

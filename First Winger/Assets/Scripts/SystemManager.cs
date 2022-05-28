@@ -6,6 +6,14 @@ public class SystemManager : MonoBehaviour
 {
     static SystemManager intance = null;
 
+
+    [SerializeField]
+    NetworkConnectionifo networkConnectionifo = new NetworkConnectionifo();
+
+    public NetworkConnectionifo Connectioninfo
+    {
+        get { return networkConnectionifo; }
+    }
     public static SystemManager Instance
     {
         get { return intance; }

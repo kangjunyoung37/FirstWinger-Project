@@ -1,21 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class InGameSceneMain : BaseSceneMain
 {
-    const float GameReadyIntaval = 3.0f;
-    public enum GameState : int
-    {
-        Ready = 0,
-        Running,
-        End,
-    }
-
-    GameState currentGameState = GameState.Ready;
+   
     public GameState CurrentGameState
     {
-        get { return currentGameState; }
+        get { return NetworkTransfer.CurrentGameState; }
     }
    
 
@@ -34,7 +27,15 @@ public class InGameSceneMain : BaseSceneMain
     {
         get
         {
+            if(!player)
+            {
+                Debug.LogWarning("Main Player is not setted");
+            }
             return player;
+        }
+        set
+        {
+            player = value;
         }
     }
 
@@ -97,23 +98,66 @@ public class InGameSceneMain : BaseSceneMain
         get { return squadronManager; }
     }
 
-    float SceneStartTime;
-    protected override void OnStart()
-    {
-        SceneStartTime = Time.time;
-    }
-    protected override void UpdateScene()
-    {
-        base.UpdateScene();
 
-        float currentTime = Time.time;
-        if(currentGameState == GameState.Ready)
+
+    [SerializeField]
+    Transform mainBGQuadTransform;
+
+    public Transform MainBGQuadTransform
+    {
+        get { return mainBGQuadTransform; }
+    }
+    //protected override void OnStart()
+    //{
+    //    SceneStartTime = Time.time;
+    //}
+    //protected override void UpdateScene()
+    //{
+    //    base.UpdateScene();
+
+    //    float currentTime = Time.time;
+    //    if(currentGameState == GameState.Ready)
+    //    {
+    //        if(currentTime-SceneStartTime > GameReadyIntaval)
+    //        {
+    //            //SquadronManager.StartGame();
+    //            currentGameState = GameState.Running;
+    //        }
+    //    }
+    //}
+
+    [SerializeField]
+    Transform playerStartTransform1;
+    public Transform PlayerStartTransform1
+    {
+        get { return playerStartTransform1; }
+    }
+
+    [SerializeField]
+    Transform playerStartTrasform2;
+    public Transform PlayerStartTrasform2
+    {
+        get { return playerStartTrasform2; }
+
+    }
+
+    [SerializeField]
+    InGameNetwrokTransfer inGameNetwrokTransfer;
+    InGameNetwrokTransfer NetworkTransfer
+    {
+        get
         {
-            if(currentTime-SceneStartTime > GameReadyIntaval)
-            {
-                SquadronManager.StartGame();
-                currentGameState = GameState.Running;
-            }
+            return inGameNetwrokTransfer;
         }
+    }
+    [SerializeField]
+    ActorManager actorManager = new ActorManager();
+    public ActorManager ActorManager
+    {
+        get { return actorManager; }
+    }
+    public void GameStart()
+    {
+        NetworkTransfer.RpcGameStart();
     }
 }
