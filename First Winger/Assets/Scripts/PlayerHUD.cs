@@ -40,6 +40,7 @@ public class PlayerHUD : MonoBehaviour
         {
             if(!OwnerPlayer.gameObject.activeSelf)
                 gameObject.SetActive(OwnerPlayer.gameObject.activeSelf);
+
             HPGage.SetHP(OwnerPlayer.HPCurrent, OwnerPlayer.HPMax);
         }
     }
