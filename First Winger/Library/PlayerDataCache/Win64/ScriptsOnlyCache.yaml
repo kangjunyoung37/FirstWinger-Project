@@ -15,6 +15,8 @@ ScriptsOnlyBuild:
     - Gage
     - InGameNetwrokTransfer
     - InGameSceneMain
+    - ItemBox
+    - ItemBoxManager
     - LoadingSceneMain
     - NetworkConfigPanel
     - PanelManager
@@ -90,41 +92,43 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1662}
     - Class: 114
-      Script: {instanceID: 1704}
+      Script: {instanceID: 1706}
     - Class: 114
-      Script: {instanceID: 1718}
+      Script: {instanceID: 1720}
     - Class: 114
-      Script: {instanceID: 1812}
+      Script: {instanceID: 1814}
     - Class: 114
-      Script: {instanceID: 2262}
+      Script: {instanceID: 2264}
     - Class: 114
-      Script: {instanceID: 2282}
+      Script: {instanceID: 2284}
     - Class: 114
-      Script: {instanceID: 2400}
+      Script: {instanceID: 2402}
     - Class: 114
-      Script: {instanceID: 2464}
+      Script: {instanceID: 2466}
     - Class: 114
-      Script: {instanceID: 2496}
+      Script: {instanceID: 2498}
     - Class: 114
-      Script: {instanceID: 2526}
+      Script: {instanceID: 2528}
     - Class: 114
-      Script: {instanceID: 2594}
+      Script: {instanceID: 2596}
     - Class: 114
-      Script: {instanceID: 2782}
+      Script: {instanceID: 2784}
     - Class: 114
-      Script: {instanceID: 2996}
+      Script: {instanceID: 2998}
     - Class: 114
-      Script: {instanceID: 3106}
+      Script: {instanceID: 3108}
     - Class: 114
-      Script: {instanceID: 3232}
+      Script: {instanceID: 3234}
     - Class: 114
-      Script: {instanceID: 3376}
+      Script: {instanceID: 3352}
     - Class: 114
-      Script: {instanceID: 3656}
+      Script: {instanceID: 3380}
     - Class: 114
-      Script: {instanceID: 4560}
+      Script: {instanceID: 3660}
     - Class: 114
-      Script: {instanceID: 4890}
+      Script: {instanceID: 4564}
+    - Class: 114
+      Script: {instanceID: 4894}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -162,6 +166,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 54
       Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
     - Class: 81
@@ -179,23 +185,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1496}
     - Class: 114
-      Script: {instanceID: 2464}
+      Script: {instanceID: 1696}
     - Class: 114
-      Script: {instanceID: 2594}
+      Script: {instanceID: 2466}
     - Class: 114
-      Script: {instanceID: 2762}
+      Script: {instanceID: 2596}
     - Class: 114
-      Script: {instanceID: 2782}
+      Script: {instanceID: 2764}
     - Class: 114
-      Script: {instanceID: 2996}
+      Script: {instanceID: 2784}
     - Class: 114
-      Script: {instanceID: 3048}
+      Script: {instanceID: 2998}
     - Class: 114
-      Script: {instanceID: 3520}
+      Script: {instanceID: 3050}
     - Class: 114
-      Script: {instanceID: 3742}
+      Script: {instanceID: 3524}
     - Class: 114
-      Script: {instanceID: 4398}
+      Script: {instanceID: 3746}
+    - Class: 114
+      Script: {instanceID: 4402}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -262,49 +270,51 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1662}
     - Class: 114
-      Script: {instanceID: 1704}
+      Script: {instanceID: 1696}
     - Class: 114
-      Script: {instanceID: 1806}
+      Script: {instanceID: 1706}
     - Class: 114
-      Script: {instanceID: 1828}
+      Script: {instanceID: 1808}
     - Class: 114
-      Script: {instanceID: 1842}
+      Script: {instanceID: 1830}
     - Class: 114
-      Script: {instanceID: 1890}
+      Script: {instanceID: 1844}
     - Class: 114
-      Script: {instanceID: 2124}
+      Script: {instanceID: 1892}
     - Class: 114
-      Script: {instanceID: 2400}
+      Script: {instanceID: 2126}
     - Class: 114
-      Script: {instanceID: 2464}
+      Script: {instanceID: 2402}
     - Class: 114
-      Script: {instanceID: 2594}
+      Script: {instanceID: 2466}
     - Class: 114
-      Script: {instanceID: 2782}
+      Script: {instanceID: 2596}
     - Class: 114
-      Script: {instanceID: 2796}
+      Script: {instanceID: 2784}
     - Class: 114
-      Script: {instanceID: 2836}
+      Script: {instanceID: 2798}
     - Class: 114
-      Script: {instanceID: 2996}
+      Script: {instanceID: 2838}
     - Class: 114
-      Script: {instanceID: 3048}
+      Script: {instanceID: 2998}
     - Class: 114
-      Script: {instanceID: 3104}
+      Script: {instanceID: 3050}
     - Class: 114
-      Script: {instanceID: 3126}
+      Script: {instanceID: 3106}
     - Class: 114
-      Script: {instanceID: 3134}
+      Script: {instanceID: 3128}
     - Class: 114
-      Script: {instanceID: 3742}
+      Script: {instanceID: 3136}
     - Class: 114
-      Script: {instanceID: 4136}
+      Script: {instanceID: 3746}
     - Class: 114
-      Script: {instanceID: 4164}
+      Script: {instanceID: 4140}
     - Class: 114
-      Script: {instanceID: 4398}
+      Script: {instanceID: 4168}
     - Class: 114
-      Script: {instanceID: 4440}
+      Script: {instanceID: 4402}
+    - Class: 114
+      Script: {instanceID: 4444}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -394,6 +404,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Selectable
+  - hash:
+      serializedVersion: 2
+      Hash: 3eec4cf5d7edd3cc6946873d2325a4cf
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ItemBox
   - hash:
       serializedVersion: 2
       Hash: 21a9c6dbf300fc1f6dc15ca7e2c39a37
@@ -780,6 +796,12 @@ ScriptsOnlyBuild:
     className: Outline
   - hash:
       serializedVersion: 2
+      Hash: 2cb86fd7881b90aa77e7c185ccd1afeb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ItemBoxManager
+  - hash:
+      serializedVersion: 2
       Hash: f1b1d314ca3b7b03e29e12762db58162
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -1062,7 +1084,7 @@ ScriptsOnlyBuild:
     className: NetworkTransformVisualizer
   - hash:
       serializedVersion: 2
-      Hash: dee2b4eb3f75f5ace68e1a28067345c0
+      Hash: 484ded7917497f9f4f3b7ea5adf24f50
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameSceneMain

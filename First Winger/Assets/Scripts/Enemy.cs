@@ -262,8 +262,11 @@ public class Enemy : Actor
     protected override void OnDead()
     {
         base.OnDead();
-        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().GamePointAccumlator.Accumulate(GamePoint);
-        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyManager.RemoveEnemy(this);
+        InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+        inGameSceneMain.GamePointAccumlator.Accumulate(GamePoint);
+        inGameSceneMain.EnemyManager.RemoveEnemy(this);
+        inGameSceneMain.ItemBoxManager.Generate(0, transform.position);
+
         CurrentState = State.Dead;
        
     }

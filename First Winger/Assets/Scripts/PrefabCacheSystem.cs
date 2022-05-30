@@ -43,6 +43,12 @@ public class PrefabCacheSystem
                     bullet.FilePath = filePath;
                     NetworkServer.Spawn(go);
                 }
+                ItemBox box = go.GetComponent<ItemBox>();
+                if(box != null)
+                {
+                    box.FilePath = filePath;
+                    NetworkServer.Spawn(go);
+                }
             }
             Cache.Add(filePath, queue);
         }
@@ -77,7 +83,12 @@ public class PrefabCacheSystem
             {
                 bullet.RpcSetActive(true);
             }
-           
+            ItemBox box = go.GetComponent<ItemBox>();
+            if (box != null)
+            {
+                box.RpcSetActive(true);
+            }
+
         }
         return go;
     }
@@ -101,7 +112,11 @@ public class PrefabCacheSystem
             {
                 bullet.RpcSetActive(false);
             }
-            
+            ItemBox box = gameObject.GetComponent<ItemBox>();
+            if (box != null)
+            {
+                box.RpcSetActive(false) ;
+            }
 
         }
         Cache[filePath].Enqueue(gameObject);

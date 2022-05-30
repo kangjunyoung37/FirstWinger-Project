@@ -21,6 +21,12 @@ public class InGameSceneMain : BaseSceneMain
     }
 
     [SerializeField]
+    ItemBoxManager itemBoxManager;
+    public ItemBoxManager ItemBoxManager
+    {
+        get { return itemBoxManager; }
+    }
+    [SerializeField]
     Player player;
 
     public Player Hero
@@ -50,6 +56,12 @@ public class InGameSceneMain : BaseSceneMain
     PrefabCacheSystem enemyCacheSystem = new PrefabCacheSystem();
     PrefabCacheSystem bulletCacheSystem = new PrefabCacheSystem();
     PrefabCacheSystem effectCacheSystem = new PrefabCacheSystem();
+    PrefabCacheSystem itemBoxCacheSystem = new PrefabCacheSystem();
+
+    public PrefabCacheSystem ItemBoxCacheSystem
+    {
+        get { return itemBoxCacheSystem; }
+    }
 
     [SerializeField]
     EnemyManager enemyManager;
