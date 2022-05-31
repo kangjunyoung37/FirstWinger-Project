@@ -22,6 +22,8 @@ public class Player : Actor
     [SerializeField]
     Transform FireTransform;
 
+
+
     [SerializeField]
     float BulletSpeed = 1;
 
@@ -30,6 +32,14 @@ public class Player : Actor
     [SerializeField]
     [SyncVar]
     bool Host = false;
+    [SerializeField]
+    [SyncVar]
+    int UsableItemCount = 0;
+
+    public int ItemCount
+    {
+        get { return UsableItemCount; }
+    }
 
     [SerializeField]
     Material ClientPlayerMaterial;
@@ -74,6 +84,8 @@ public class Player : Actor
     }
     protected override void UpdateActor()
     {
+        if (!isLocalPlayer)//로컬 플레이어가 아니면
+            return;
         UpdateInput();
         UpdateMove();
     }
@@ -195,6 +207,45 @@ public class Player : Actor
     public void RpcSetHost()
     {
         Host = true;
+        base.SetDirtyBit(1);
+    }
+    protected virtual void InternalIncreaseHP(int value)
+    {
+        if(isDead)
+        {
+            return;
+        }
+        CurrentHP += value;
+        if(CurrentHP > MaxHP)
+            CurrentHP = MaxHP;
+
+    }
+    public virtual void IncreaseHP(int value)
+    {
+        if(isDead)
+        { 
+            return;
+        }
+        CmdIncreaseHP(value);
+    }
+    [Command]
+    public void CmdIncreaseHP(int value)
+    {
+        InternalIncreaseHP(value);
+        base.SetDirtyBit(1);
+    }
+    public virtual void IncreaseUsableItem(int value = 1)
+    {
+        if(isDead)
+        {
+            return;
+        }
+        CmdIncreaseUsableItem(value);
+    }
+    [Command]
+    public void CmdIncreaseUsableItem(int value)
+    {
+        UsableItemCount += value;
         base.SetDirtyBit(1);
     }
 }

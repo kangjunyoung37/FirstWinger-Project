@@ -25,7 +25,7 @@ public class ActorManager
             return true;
         }
         Actors.Add(ActorInstanceID, actor);
-        Debug.Log("Actor Regist id=" + ActorInstanceID);
+       
         return true;
     }
     public Actor GetActor(int ActorIntaceID)

@@ -67,6 +67,12 @@ public class Enemy : Actor
     [SyncVar]
     Vector3 DisappearPoint;
 
+    [SerializeField]
+    [SyncVar]
+    float ItemDropRate;
+    [SerializeField]
+    [SyncVar]
+    int ItemDropID;
     protected override void Initialize()
     {
 
@@ -175,6 +181,7 @@ public class Enemy : Actor
     void ResetData(SquadronStruct data)
     {
         EnemyStruct enemyStruct = SystemManager.Instance.EnemyTable.GetEnemy(data.EnemyID);
+        Debug.Log("내 아이디는" + data.EnemyID);
         CurrentHP = MaxHP = enemyStruct.MaxHP;
         Damage = enemyStruct.Damage;
         crashDamage = enemyStruct.CrashDamage;
@@ -184,7 +191,8 @@ public class Enemy : Actor
 
         AppearPoint = new Vector3(data.AppearPointX, data.AppearPointY, 0);
         DisappearPoint = new Vector3(data.DisappearPointX, data.DisappearPointY, 0);
-
+        ItemDropRate = enemyStruct.ItemDropRate;
+        ItemDropID = enemyStruct.ItemDropID;
 
         CurrentState = State.Ready;
         LastActionUpdateTime = Time.time;
@@ -265,7 +273,8 @@ public class Enemy : Actor
         InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
         inGameSceneMain.GamePointAccumlator.Accumulate(GamePoint);
         inGameSceneMain.EnemyManager.RemoveEnemy(this);
-        inGameSceneMain.ItemBoxManager.Generate(0, transform.position);
+        GenerateItem();
+
 
         CurrentState = State.Dead;
        
@@ -287,5 +296,30 @@ public class Enemy : Actor
     {
         ResetData(data);
         base.SetDirtyBit(1);
+    }
+    void GenerateItem()
+    {
+        if (!isServer) 
+            return;
+        float ItemGen = Random.Range(0.0f, 100.0f);
+        if (ItemGen > ItemDropRate)
+            return;
+        ItemDropTable itemDropTable = SystemManager.Instance.ItemDropTable;
+        ItemDropStruct dropStruct = itemDropTable.GetDropData(ItemDropID);
+
+        ItemGen = Random.Range(0, dropStruct.Rate1 + dropStruct.Rate2 + dropStruct.Rate3);
+        int ItemIndex = -1;
+        if (ItemGen <= dropStruct.Rate1)
+            ItemIndex = dropStruct.ItemID1;
+        else if(ItemGen <= dropStruct.Rate1+dropStruct.Rate2)
+        {
+            ItemIndex = dropStruct.ItemID2;
+        }
+        else if(ItemGen <= dropStruct.Rate1+dropStruct.Rate2+dropStruct.Rate3)
+        {
+            ItemIndex = dropStruct.ItemID3;
+        }
+        InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+        inGameSceneMain.ItemBoxManager.Generate(ItemIndex, transform.position);
     }
 }

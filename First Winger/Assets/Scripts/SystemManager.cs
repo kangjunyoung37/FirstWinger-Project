@@ -33,6 +33,18 @@ public class SystemManager : MonoBehaviour
     {
         set { currentSceneMain = value; }
     }
+    [SerializeField]
+    ItemTable itemTable;
+    public ItemTable ItemTable
+    {
+        get { return itemTable; }
+    }
+    [SerializeField]
+    ItemDropTable itemDropTable;
+    public ItemDropTable ItemDropTable
+    {
+        get { return itemDropTable; }
+    }
     private void Awake()
     {
         if(intance != null)

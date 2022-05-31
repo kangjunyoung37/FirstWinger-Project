@@ -16,6 +16,8 @@ public struct EnemyStruct
     public int BulletSpeed;
     public int FireReaminCount;
     public int GamePoint;
+    public float ItemDropRate;
+    public int ItemDropID;
 }
 
 public class EnemyTable : TableLoader<EnemyStruct>//public class TableLoader<TMarshalStruct> : MonoBehaviour 테이블 로더의 클래스를 상속

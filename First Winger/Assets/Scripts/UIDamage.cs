@@ -43,13 +43,7 @@ public class UIDamage : MonoBehaviour
     {
         UpdateDamage();
     }
-    private void OnGUI()
-    {
-        if (GUILayout.Button("Show"))
-        {
-            ShowDamage(9999,Color.red);
-        }
-    }
+   
     public void ShowDamage(int damage, Color color)
     {
         damageText.text = damage.ToString();

@@ -89,6 +89,11 @@ public class Bullet : NetworkBehaviour
         RaycastHit hitInfo;
        if( Physics.Linecast(transform.position,transform.position+moveVector ,out hitInfo ))
        {
+            int colliderLayer = hitInfo.collider.gameObject.layer;
+            if(colliderLayer != LayerMask.NameToLayer("Enemy") && colliderLayer != LayerMask.NameToLayer("Player"))
+            {
+                return moveVector;
+            }
             moveVector = hitInfo.point-transform.position;
             OnBulletCollision(hitInfo.collider);
        }
@@ -105,7 +110,15 @@ public class Bullet : NetworkBehaviour
             return;
         }
         Actor owner = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().ActorManager.GetActor(OwnerInstanceID);
+        if(owner == null) // 호스트나 클라이언트중 한쪽이 끊어졌을때
+        {
+            return;
+        }
         Actor actor = collider.GetComponentInParent<Actor>();
+        if(actor == null)
+        {
+            return;
+        }
         if (actor && actor.IsDead || actor.gameObject.layer == owner.gameObject.layer)
         {
             return;
@@ -114,8 +127,8 @@ public class Bullet : NetworkBehaviour
         actor.OnBulletHited(Damage, transform.position);
        
 
-        Collider myCollider = GetComponentInChildren<Collider>();
-        myCollider.enabled = false;
+        //Collider myCollider = GetComponentInChildren<Collider>();
+        //myCollider.enabled = false;
         Hited = true;
         NeddMove = false;
         GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
@@ -125,6 +138,11 @@ public class Bullet : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        int colliderLayer = other.gameObject.layer;
+        if (colliderLayer != LayerMask.NameToLayer("Enemy") && colliderLayer != LayerMask.NameToLayer("Player"))
+        {
+            return;
+        }
         OnBulletCollision(other);   
     }
     bool ProcessDisappearCondition()

@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Text;
 using System;
 
-
-
 public class MarshalTableConstant
 {
     public const int charBufferSize = 256;

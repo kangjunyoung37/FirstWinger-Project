@@ -17,6 +17,9 @@ ScriptsOnlyBuild:
     - InGameSceneMain
     - ItemBox
     - ItemBoxManager
+    - ItemDropTable
+    - ItemPanel
+    - ItemTable
     - LoadingSceneMain
     - NetworkConfigPanel
     - PanelManager
@@ -112,23 +115,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2596}
     - Class: 114
-      Script: {instanceID: 2784}
+      Script: {instanceID: 2786}
     - Class: 114
-      Script: {instanceID: 2998}
+      Script: {instanceID: 3000}
     - Class: 114
-      Script: {instanceID: 3108}
+      Script: {instanceID: 3110}
     - Class: 114
-      Script: {instanceID: 3234}
+      Script: {instanceID: 3236}
     - Class: 114
-      Script: {instanceID: 3352}
+      Script: {instanceID: 3354}
     - Class: 114
-      Script: {instanceID: 3380}
+      Script: {instanceID: 3382}
     - Class: 114
-      Script: {instanceID: 3660}
+      Script: {instanceID: 3640}
     - Class: 114
-      Script: {instanceID: 4564}
+      Script: {instanceID: 3666}
     - Class: 114
-      Script: {instanceID: 4894}
+      Script: {instanceID: 4570}
+    - Class: 114
+      Script: {instanceID: 4900}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -191,19 +196,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2596}
     - Class: 114
-      Script: {instanceID: 2764}
+      Script: {instanceID: 2766}
     - Class: 114
-      Script: {instanceID: 2784}
+      Script: {instanceID: 2786}
     - Class: 114
-      Script: {instanceID: 2998}
+      Script: {instanceID: 3000}
     - Class: 114
-      Script: {instanceID: 3050}
+      Script: {instanceID: 3052}
     - Class: 114
-      Script: {instanceID: 3524}
+      Script: {instanceID: 3526}
     - Class: 114
-      Script: {instanceID: 3746}
+      Script: {instanceID: 3752}
     - Class: 114
-      Script: {instanceID: 4402}
+      Script: {instanceID: 4408}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -290,31 +295,35 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2596}
     - Class: 114
-      Script: {instanceID: 2784}
+      Script: {instanceID: 2664}
     - Class: 114
-      Script: {instanceID: 2798}
+      Script: {instanceID: 2786}
     - Class: 114
-      Script: {instanceID: 2838}
+      Script: {instanceID: 2800}
     - Class: 114
-      Script: {instanceID: 2998}
+      Script: {instanceID: 2840}
     - Class: 114
-      Script: {instanceID: 3050}
+      Script: {instanceID: 3000}
     - Class: 114
-      Script: {instanceID: 3106}
+      Script: {instanceID: 3052}
     - Class: 114
-      Script: {instanceID: 3128}
+      Script: {instanceID: 3108}
     - Class: 114
-      Script: {instanceID: 3136}
+      Script: {instanceID: 3130}
     - Class: 114
-      Script: {instanceID: 3746}
+      Script: {instanceID: 3138}
     - Class: 114
-      Script: {instanceID: 4140}
+      Script: {instanceID: 3658}
     - Class: 114
-      Script: {instanceID: 4168}
+      Script: {instanceID: 3752}
     - Class: 114
-      Script: {instanceID: 4402}
+      Script: {instanceID: 4146}
     - Class: 114
-      Script: {instanceID: 4444}
+      Script: {instanceID: 4174}
+    - Class: 114
+      Script: {instanceID: 4408}
+    - Class: 114
+      Script: {instanceID: 4450}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -406,7 +415,7 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: 3eec4cf5d7edd3cc6946873d2325a4cf
+      Hash: 8c1413700913ba562d49253d2130bab0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ItemBox
@@ -484,7 +493,7 @@ ScriptsOnlyBuild:
     className: PlayerHUD
   - hash:
       serializedVersion: 2
-      Hash: c3ebdb4bf25ec682635ec151f5d246d0
+      Hash: f787b5c714090becc1045a704c90acf4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SystemManager
@@ -632,6 +641,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TextMeshProUGUI
+  - hash:
+      serializedVersion: 2
+      Hash: 85e89b51b107daea862016231064d6c3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ItemTable
   - hash:
       serializedVersion: 2
       Hash: 21e871d89bbce53c038fc75ad1b7c7f3
@@ -886,6 +901,18 @@ ScriptsOnlyBuild:
     className: AudioPlayableAsset
   - hash:
       serializedVersion: 2
+      Hash: 8019a7f8ca1b2b23d003292dccedc3a1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ItemPanel
+  - hash:
+      serializedVersion: 2
+      Hash: 85e89b51b107daea862016231064d6c3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ItemDropTable
+  - hash:
+      serializedVersion: 2
       Hash: 85e89b51b107daea862016231064d6c3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -922,7 +949,7 @@ ScriptsOnlyBuild:
     className: Dropdown
   - hash:
       serializedVersion: 2
-      Hash: 963479a156a09bde62fc2375bc9b7b2d
+      Hash: 09a29adc4913d5169cab9ab8a3706b26
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Enemy
@@ -1054,7 +1081,7 @@ ScriptsOnlyBuild:
     className: TMP_SubMeshUI
   - hash:
       serializedVersion: 2
-      Hash: bbe26d50363bc4839d36d23397ffd0cd
+      Hash: cdb4caf5281224391aae7fe5adfcf13c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

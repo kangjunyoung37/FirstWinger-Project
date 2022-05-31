@@ -34,8 +34,11 @@ public class SquadronManager : MonoBehaviour
  
     void Update()
     {
+        if (running)  
+            CheckSquadronGenerateings();
+        Debug.Log("내가 스쿼드론 개수임" + squadronScheduleTable.GetDataCount());
 
-        CheckSquadronGenerateings();
+
     }
     public void StartGame()
     {
@@ -54,8 +57,10 @@ public class SquadronManager : MonoBehaviour
         SquadronScheduleDataStruct data = squadronScheduleTable.GetSquadronScheduleDataStruct(SquadronIndex);
         if(Time.time - GameStartTime >= data.GenerateTime)
         {
+            
             GenerateSquadron(squadronDatas[data.SquadronID]);
-            SquadronIndex += 1;
+            SquadronIndex++;
+            
             if (SquadronIndex >= squadronScheduleTable.GetDataCount())
             {
                 AllSquadronGenerated();

@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3854257483733897411}
   - component: {fileID: 5727471010784583050}
   - component: {fileID: 8256885568128299102}
-  m_Layer: 0
+  - component: {fileID: 1348609949275281347}
+  m_Layer: 12
   m_Name: ItemBoxBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +44,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64281591034643205}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -60,6 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f1cd196e0843946af0549d1d7aca52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemEffect: 1
   selfTransform: {fileID: 274248241514898817}
   RotateAngle: {x: 0, y: 0.5, z: 0}
   filePath: 
@@ -97,6 +99,22 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!54 &1348609949275281347
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64281591034643205}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3323491801665550503
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +127,7 @@ GameObject:
   - component: {fileID: 1838682943950304370}
   - component: {fileID: 836357840147753587}
   - component: {fileID: 334060825498779599}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FrontQuad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +223,7 @@ GameObject:
   - component: {fileID: 5763740417113787687}
   - component: {fileID: 8723828537110425054}
   - component: {fileID: 4859197005265936529}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BackQuad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
