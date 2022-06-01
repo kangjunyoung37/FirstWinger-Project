@@ -184,6 +184,55 @@ public class Player : Actor
             CmdFire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
         }
     }
+    public void FireBomb()
+    {
+        if (UsableItemCount <= 0)
+            return;
+        if(Host)
+        {
+            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex);
+            bullet.Fire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+
+        }
+        else
+        {
+            CmdFireBomb(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
+        DecreaseUsableItemCount();
+    }
+    void DecreaseUsableItemCount()
+    {
+        if(isServer)
+        {
+            RpcDecreaseUsableItemCount();
+        }
+        else
+        {
+            CmdDecreaseUsableItemCount();
+            if (isLocalPlayer)
+                UsableItemCount--;
+        }
+    }
+    [Command]
+    void CmdDecreaseUsableItemCount()
+    {
+        UsableItemCount--;
+        base.SetDirtyBit(1);
+    }
+
+    void RpcDecreaseUsableItemCount()
+    {
+        UsableItemCount--;
+        base.SetDirtyBit(1);
+    }
+    [Command]
+    public void CmdFireBomb(int ownerIntanceId, Vector3 firePosition, Vector3 direction, float speed, int damage)
+
+    {
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex);
+        bullet.Fire(ownerIntanceId, firePosition, direction, speed, damage);
+        base.SetDirtyBit(1);
+    }
     [Command]
     public void CmdFire(int ownerIntanceId, Vector3 firePosition, Vector3 direction, float speed, int damage)
     {

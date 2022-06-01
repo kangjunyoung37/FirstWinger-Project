@@ -1,8 +1,11 @@
 ScriptsOnlyBuild:
   usedScripts:
+    Assembly-CSharp-Editor.dll:
+    - ReadmeStarSparrowEditor
     Assembly-CSharp.dll:
     - AutoCachableEffect
     - BGScroller
+    - Bomb
     - Bullet
     - BulletManager
     - DamageManager
@@ -26,6 +29,7 @@ ScriptsOnlyBuild:
     - Player
     - PlayerHUD
     - PlayerStatePanel
+    - ReadmeStarSparrow
     - SquadronManager
     - SquadronScheduleTable
     - SquadronTable
@@ -105,35 +109,35 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2284}
     - Class: 114
-      Script: {instanceID: 2402}
+      Script: {instanceID: 2404}
     - Class: 114
-      Script: {instanceID: 2466}
+      Script: {instanceID: 2468}
     - Class: 114
-      Script: {instanceID: 2498}
+      Script: {instanceID: 2500}
     - Class: 114
-      Script: {instanceID: 2528}
+      Script: {instanceID: 2530}
     - Class: 114
-      Script: {instanceID: 2596}
+      Script: {instanceID: 2598}
     - Class: 114
-      Script: {instanceID: 2786}
+      Script: {instanceID: 2788}
     - Class: 114
-      Script: {instanceID: 3000}
+      Script: {instanceID: 3002}
     - Class: 114
-      Script: {instanceID: 3110}
+      Script: {instanceID: 3112}
     - Class: 114
-      Script: {instanceID: 3236}
+      Script: {instanceID: 3238}
     - Class: 114
-      Script: {instanceID: 3354}
+      Script: {instanceID: 3356}
     - Class: 114
-      Script: {instanceID: 3382}
+      Script: {instanceID: 3384}
     - Class: 114
-      Script: {instanceID: 3640}
+      Script: {instanceID: 3642}
     - Class: 114
-      Script: {instanceID: 3666}
+      Script: {instanceID: 3668}
     - Class: 114
-      Script: {instanceID: 4570}
+      Script: {instanceID: 4572}
     - Class: 114
-      Script: {instanceID: 4900}
+      Script: {instanceID: 4902}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -192,26 +196,30 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1696}
     - Class: 114
-      Script: {instanceID: 2466}
+      Script: {instanceID: 2372}
     - Class: 114
-      Script: {instanceID: 2596}
+      Script: {instanceID: 2468}
     - Class: 114
-      Script: {instanceID: 2766}
+      Script: {instanceID: 2598}
     - Class: 114
-      Script: {instanceID: 2786}
+      Script: {instanceID: 2768}
     - Class: 114
-      Script: {instanceID: 3000}
+      Script: {instanceID: 2788}
     - Class: 114
-      Script: {instanceID: 3052}
+      Script: {instanceID: 3002}
     - Class: 114
-      Script: {instanceID: 3526}
+      Script: {instanceID: 3054}
     - Class: 114
-      Script: {instanceID: 3752}
+      Script: {instanceID: 3528}
     - Class: 114
-      Script: {instanceID: 4408}
+      Script: {instanceID: 3754}
+    - Class: 114
+      Script: {instanceID: 4410}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
+      Script: {instanceID: 0}
+    - Class: 135
       Script: {instanceID: 0}
     - Class: 136
       Script: {instanceID: 0}
@@ -289,44 +297,48 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2126}
     - Class: 114
-      Script: {instanceID: 2402}
+      Script: {instanceID: 2372}
     - Class: 114
-      Script: {instanceID: 2466}
+      Script: {instanceID: 2404}
     - Class: 114
-      Script: {instanceID: 2596}
+      Script: {instanceID: 2468}
     - Class: 114
-      Script: {instanceID: 2664}
+      Script: {instanceID: 2598}
     - Class: 114
-      Script: {instanceID: 2786}
+      Script: {instanceID: 2666}
     - Class: 114
-      Script: {instanceID: 2800}
+      Script: {instanceID: 2788}
     - Class: 114
-      Script: {instanceID: 2840}
+      Script: {instanceID: 2802}
     - Class: 114
-      Script: {instanceID: 3000}
+      Script: {instanceID: 2842}
     - Class: 114
-      Script: {instanceID: 3052}
+      Script: {instanceID: 3002}
     - Class: 114
-      Script: {instanceID: 3108}
+      Script: {instanceID: 3054}
     - Class: 114
-      Script: {instanceID: 3130}
+      Script: {instanceID: 3110}
     - Class: 114
-      Script: {instanceID: 3138}
+      Script: {instanceID: 3132}
     - Class: 114
-      Script: {instanceID: 3658}
+      Script: {instanceID: 3140}
     - Class: 114
-      Script: {instanceID: 3752}
+      Script: {instanceID: 3660}
     - Class: 114
-      Script: {instanceID: 4146}
+      Script: {instanceID: 3754}
     - Class: 114
-      Script: {instanceID: 4174}
+      Script: {instanceID: 4148}
     - Class: 114
-      Script: {instanceID: 4408}
+      Script: {instanceID: 4176}
     - Class: 114
-      Script: {instanceID: 4450}
+      Script: {instanceID: 4410}
+    - Class: 114
+      Script: {instanceID: 4452}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
+      Script: {instanceID: 0}
+    - Class: 135
       Script: {instanceID: 0}
     - Class: 136
       Script: {instanceID: 0}
@@ -557,6 +569,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: WFX_LightFlicker
+  - hash:
+      serializedVersion: 2
+      Hash: 85525c981f570d22bc08a308e7e2b4a6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Bomb
   - hash:
       serializedVersion: 2
       Hash: 3a7a02970a28fb9728b122fc575e07bd
@@ -1153,7 +1171,7 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
-      Hash: 7da5fc96c34cd89665be7ac568b4c1f6
+      Hash: 22ff7ffdeae754f6b7163417b2275496
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EnemyManager
@@ -1162,4 +1180,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/TitleScene.unity
   - Assets/Scenes/LoadingScene.unity
   - Assets/Scenes/InGame.unity
-  playerPath: C:/Users/kangjunyoung/Documents/FirstWinger_Build/First Winger.exe
+  playerPath: C:/Users/kangjunyoung/Documents/First Winger.exe

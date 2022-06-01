@@ -55,6 +55,10 @@ public class InputController
         {
             SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero.Fire();
         }
+        if(Input.GetMouseButtonDown(1))
+        {
+            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero.FireBomb(); 
+        }
     }
 }
 

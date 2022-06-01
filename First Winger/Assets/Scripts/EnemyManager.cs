@@ -6,6 +6,8 @@ public class EnemyManager : MonoBehaviour
 {
     [SerializeField]
     EnemyFactory enemyFactory;
+
+    [SerializeField]
     List<Enemy> enemies = new List<Enemy>();
 
     
@@ -33,7 +35,7 @@ public class EnemyManager : MonoBehaviour
         Enemy enemy = go.GetComponent<Enemy>();
         enemy.SetPosition(new Vector3(data.GeneratePointX,data.GeneratePointY,0));
         enemy.Reset(data);
-        enemies.Add(enemy);
+        enemy.AddList();
         return true;
     }
 
@@ -47,7 +49,7 @@ public class EnemyManager : MonoBehaviour
             Debug.LogError("no exist Enemy");
             return false;
         }
-        enemies.Remove(enemy);
+        enemy.RemoveList();
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.Restore(enemy.FilePath, enemy.gameObject);
         return true;
     }
@@ -61,5 +63,38 @@ public class EnemyManager : MonoBehaviour
             GameObject go = enemyFactory.Load(enemyFiles[i].filePath);
             SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.GenerateCache(enemyFiles[i].filePath, go, enemyFiles[i].cacheCount,this.transform);
         } 
+    }
+    public bool AddList(Enemy enemy)
+    {
+        if (enemies.Contains(enemy))
+            return false;
+        enemies.Add(enemy);
+        return true;
+    }
+
+    public bool RemoveList(Enemy enemy)
+    {
+        if (!enemies.Contains(enemy))
+            return false;
+        enemies.Remove(enemy);
+        return true;
+    }
+    public List<Enemy> GetContainEnemies(Collider collider)
+    {
+        List<Enemy> contains = new List<Enemy>();
+
+        Collider enemyCollider;
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemyCollider = enemies[i].GetComponentInChildren<Collider>();
+            if(enemyCollider == null)
+            {
+                Debug.LogError(enemies[i] + name + "model is not correct");
+                continue;
+            }
+            if (collider.bounds.Intersects(enemyCollider.bounds))//boundsÃæµ¹¿µ¿ª SphereÄÝ¸®´õ¿Í °ãÃÆ´ÂÁö ¾È°ãÃÆ´ÂÁö È®ÀÎ
+                contains.Add(enemies[i]);
+        }
+        return contains;    
     }
 }

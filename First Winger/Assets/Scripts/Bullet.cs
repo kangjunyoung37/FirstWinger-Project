@@ -19,7 +19,7 @@ public class Bullet : NetworkBehaviour
     [SerializeField]
     float Speed = 0.0f;
     [SyncVar]
-    bool NeddMove = false;
+    protected bool NeedMove = false;
    
     [SyncVar]
     bool Hited = false;
@@ -29,7 +29,7 @@ public class Bullet : NetworkBehaviour
     
     [SyncVar]
     [SerializeField]
-    int Damage = 1;
+    protected int Damage = 1;
 
     [SyncVar]
     [SerializeField]
@@ -57,12 +57,17 @@ public class Bullet : NetworkBehaviour
     {
         if (ProcessDisappearCondition())
             return;
-    
+        UpdateTransform();
+
+
+    }
+    protected virtual void UpdateTransform()
+    {
         UpdateMove();
     }
-    void UpdateMove()
+    protected virtual void UpdateMove()
     {
-        if (!NeddMove)
+        if (!NeedMove)
             return;
 
         Vector3 moveVector = MoveDirection.normalized * Speed * Time.deltaTime;
@@ -71,18 +76,43 @@ public class Bullet : NetworkBehaviour
 
 
     }
-    public void Fire(int ownerIntanceID , Vector3 firePosition,Vector3 direction,float speed,int damage)
-    {
 
+    void InternelFire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    {
         OwnerInstanceID = ownerIntanceID;
         SetPosition(firePosition);
         transform.position = firePosition;
         MoveDirection = direction;
-        Speed = speed; 
+        Speed = speed;
         Damage = damage;
-        NeddMove = true;
+        NeedMove = true;
         FiredTime = Time.time;
-        UpdateNetworkBullet();
+    }
+    public virtual void Fire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    {
+        if (isServer)
+        {
+            RpcFire(ownerIntanceID, firePosition, direction, speed, damage);
+        }
+        else
+        {
+            CmdFire(ownerIntanceID, firePosition, direction, speed, damage);
+            if (isLocalPlayer)
+                InternelFire(ownerIntanceID, firePosition, direction, speed, damage);
+        }
+        //UpdateNetworkBullet();
+    }
+    [Command]
+    public void CmdFire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    {
+        InternelFire(ownerIntanceID, firePosition, direction, speed, damage);
+        base.SetDirtyBit(1);
+    }
+    [ClientRpc]
+    public void RpcFire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    {
+        InternelFire(ownerIntanceID, firePosition, direction, speed, damage);
+        base.SetDirtyBit(1);
     }
     Vector3 AdjustMove(Vector3 moveVector)
     {
@@ -100,28 +130,28 @@ public class Bullet : NetworkBehaviour
        return moveVector;
     }
 
-    void OnBulletCollision(Collider collider)
+    protected virtual bool OnBulletCollision(Collider collider)
     {
         if (Hited)
-            return;
+            return false;
         
         if(collider.gameObject.layer == LayerMask.NameToLayer("EnemyBullet")||collider.gameObject.layer == LayerMask.NameToLayer("PlayerBullet"))
         {
-            return;
+            return false;
         }
         Actor owner = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().ActorManager.GetActor(OwnerInstanceID);
         if(owner == null) // 호스트나 클라이언트중 한쪽이 끊어졌을때
         {
-            return;
+            return false;
         }
         Actor actor = collider.GetComponentInParent<Actor>();
         if(actor == null)
         {
-            return;
+            return false;
         }
         if (actor && actor.IsDead || actor.gameObject.layer == owner.gameObject.layer)
         {
-            return;
+            return false;
         }
 
         actor.OnBulletHited(Damage, transform.position);
@@ -130,10 +160,12 @@ public class Bullet : NetworkBehaviour
         //Collider myCollider = GetComponentInChildren<Collider>();
         //myCollider.enabled = false;
         Hited = true;
-        NeddMove = false;
+        NeedMove = false;
         GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
         go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         Disapper();
+
+        return true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -159,7 +191,7 @@ public class Bullet : NetworkBehaviour
         }
             return false;
     }
-    void Disapper()
+    protected void Disapper()
     {
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Remove(this);
     }
@@ -194,26 +226,5 @@ public class Bullet : NetworkBehaviour
         this.transform.position = position;
         base.SetDirtyBit(1);
     }
-    public void UpdateNetworkBullet()
-    {
-        if(isServer)
-        {
-            RpcUpdateNetworkBullet();
-        }
-        else
-        {
-            CmdUpdateNetworkBullet();
-        }
-    }
-    [Command]
-    public void CmdUpdateNetworkBullet()
-    {
-        base.SetDirtyBit(1);
-    }
-
-    [ClientRpc]
-    public void RpcUpdateNetworkBullet()
-    {
-        base.SetDirtyBit(1);
-    }
+   
 }

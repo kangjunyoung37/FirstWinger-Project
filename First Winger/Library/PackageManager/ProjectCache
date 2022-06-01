@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637892276314337791
+      ticks: 637896640785104584
     m_Hash: 88286841
   m_LockFileStatus:
     m_FilePath: C:/Users/kangjunyoung/Documents/GitHub/FirstWinger/First Winger/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637892276314437886
+      ticks: 637896640785204676
     m_Hash: 2041926666
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}

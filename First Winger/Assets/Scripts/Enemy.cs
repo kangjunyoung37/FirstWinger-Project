@@ -319,7 +319,31 @@ public class Enemy : Actor
         {
             ItemIndex = dropStruct.ItemID3;
         }
+        
         InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
         inGameSceneMain.ItemBoxManager.Generate(ItemIndex, transform.position);
     }
+    public void AddList()
+    {
+        if (isServer)
+            RpcAddList();
+    }
+    [ClientRpc]
+    public void RpcAddList()
+    {
+        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyManager.AddList(this);
+        base.SetDirtyBit(1);
+    }
+    public void RemoveList()
+    {
+        if (isServer)
+            RpcRemoveList();
+    }
+    [ClientRpc]
+    public void RpcRemoveList()
+    {
+        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyManager.RemoveList(this);
+        base.SetDirtyBit(1);
+    }
+
 }

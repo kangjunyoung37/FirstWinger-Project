@@ -91,6 +91,7 @@ MonoBehaviour:
   FireTransform: {fileID: 1672785994356964293}
   BulletSpeed: 10
   Host: 0
+  UsableItemCount: 0
   ClientPlayerMaterial: {fileID: 2100000, guid: 2bd34ca215750fc48902c734d2d5d80f, type: 2}
 --- !u!54 &5013753238365101931
 Rigidbody:
