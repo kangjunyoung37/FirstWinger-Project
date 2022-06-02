@@ -8,7 +8,9 @@ public enum GameState : int
     None = 0,
     Ready,
     Running,
+    NoInput,
     End,
+
 
 }
 
@@ -41,7 +43,6 @@ public class InGameNetwrokTransfer : NetworkBehaviour
     [ClientRpc]
     public void RpcGameStart()
     {
-        Debug.Log("RpcGameStart");
         CountingStartTime = Time.time;
         currentGameState = GameState.Ready;
         InGameSceneMain inGameSceneMain =  SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
@@ -49,6 +50,18 @@ public class InGameNetwrokTransfer : NetworkBehaviour
         inGameSceneMain.BulletManager.Prepare();
         inGameSceneMain.ItemBoxManager.Prepare();
         
+    }
+    [ClientRpc]
+    public void RpcShowWarningUI()
+    {
+        PanelManager.GetPanel(typeof(WarningPanel)).Show();
+        currentGameState = GameState.NoInput;
+    }
+
+    [ClientRpc]
+    public void RpcSetRunningState()
+    {
+        currentGameState = GameState.Running;
     }
 
 

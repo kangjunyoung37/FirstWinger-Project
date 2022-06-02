@@ -19,6 +19,8 @@ public class SquadronManager : MonoBehaviour
 
 
     bool running = false;
+    bool AllSquadronGenerated = false;
+    bool ShowWarningUICalled = false;
 
     void Start()
     {
@@ -27,16 +29,28 @@ public class SquadronManager : MonoBehaviour
         {
             squadronDatas[i].Load();
 
-            squadronScheduleTable.Load();
+           
         }
+        squadronScheduleTable.Load();
     }
 
  
     void Update()
     {
-        if (running)  
+        if(!AllSquadronGenerated)
             CheckSquadronGenerateings();
-        Debug.Log("내가 스쿼드론 개수임" + squadronScheduleTable.GetDataCount());
+        else if(!ShowWarningUICalled)
+        {
+            InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+            if (SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyManager.GetEnemyListCount() == 0)
+            {
+                inGameSceneMain.ShowWaringUI();
+                ShowWarningUICalled = true;
+            }
+        }
+      
+
+
 
 
     }
@@ -63,7 +77,7 @@ public class SquadronManager : MonoBehaviour
             
             if (SquadronIndex >= squadronScheduleTable.GetDataCount())
             {
-                AllSquadronGenerated();
+                OnAllSquadronGenerated();
                 return;
             }
         }
@@ -78,10 +92,11 @@ public class SquadronManager : MonoBehaviour
         }
     }
 
-    void AllSquadronGenerated()
+    void OnAllSquadronGenerated()
     {
         Debug.Log("AllSqadronGenerateed");
         running = false;
+        AllSquadronGenerated = true;
     }
 
 }

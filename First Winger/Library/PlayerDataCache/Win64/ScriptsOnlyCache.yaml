@@ -1,11 +1,10 @@
 ScriptsOnlyBuild:
   usedScripts:
-    Assembly-CSharp-Editor.dll:
-    - ReadmeStarSparrowEditor
     Assembly-CSharp.dll:
     - AutoCachableEffect
     - BGScroller
     - Bomb
+    - Boss
     - Bullet
     - BulletManager
     - DamageManager
@@ -29,13 +28,13 @@ ScriptsOnlyBuild:
     - Player
     - PlayerHUD
     - PlayerStatePanel
-    - ReadmeStarSparrow
     - SquadronManager
     - SquadronScheduleTable
     - SquadronTable
     - SystemManager
     - TitleSceneMain
     - UIDamage
+    - WarningPanel
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro.dll:
@@ -135,9 +134,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 3668}
     - Class: 114
-      Script: {instanceID: 4572}
+      Script: {instanceID: 4574}
     - Class: 114
-      Script: {instanceID: 4902}
+      Script: {instanceID: 4734}
+    - Class: 114
+      Script: {instanceID: 4906}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -215,6 +216,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 3754}
     - Class: 114
       Script: {instanceID: 4410}
+    - Class: 114
+      Script: {instanceID: 4424}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -333,7 +336,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4410}
     - Class: 114
-      Script: {instanceID: 4452}
+      Script: {instanceID: 4424}
+    - Class: 114
+      Script: {instanceID: 4454}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1105,6 +1110,12 @@ ScriptsOnlyBuild:
     className: Player
   - hash:
       serializedVersion: 2
+      Hash: 3628d76b68bc3236a9df3101202fca81
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Boss
+  - hash:
+      serializedVersion: 2
       Hash: fd68d84f33fad85aac38f2739c0ee270
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -1129,10 +1140,16 @@ ScriptsOnlyBuild:
     className: NetworkTransformVisualizer
   - hash:
       serializedVersion: 2
-      Hash: 484ded7917497f9f4f3b7ea5adf24f50
+      Hash: 1a178af07e8ca43c3c3b7361f7d6005b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameSceneMain
+  - hash:
+      serializedVersion: 2
+      Hash: 64a9e3d20f6aa1409399a2db2b792f55
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: WarningPanel
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f

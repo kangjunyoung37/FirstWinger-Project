@@ -39,6 +39,7 @@ public class EnemyManager : MonoBehaviour
         return true;
     }
 
+
     public bool RemoveEnemy(Enemy enemy)
     {
         if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)       
@@ -96,5 +97,9 @@ public class EnemyManager : MonoBehaviour
                 contains.Add(enemies[i]);
         }
         return contains;    
+    }
+    public int GetEnemyListCount()
+    {
+        return enemies.Count;
     }
 }

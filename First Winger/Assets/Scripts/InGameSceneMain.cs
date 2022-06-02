@@ -165,8 +165,39 @@ public class InGameSceneMain : BaseSceneMain
     {
         get { return actorManager; }
     }
+
+    [SerializeField]
+    int BossEnemyID;
+
+    [SerializeField]
+    Vector3 BossGeneratePos;
+
+    [SerializeField]
+    Vector3 BossAppearPos;
+
     public void GameStart()
     {
         NetworkTransfer.RpcGameStart();
+    }
+    public void ShowWaringUI()
+    {
+        NetworkTransfer.RpcShowWarningUI();
+    }
+    public void SetRunningState()
+    {
+        NetworkTransfer.RpcSetRunningState();
+    }
+    public void GenerateBoss()
+    {
+        SquadronStruct data = new SquadronStruct();
+        data.EnemyID = BossEnemyID;
+        data.GeneratePointX = BossGeneratePos.x;
+        data.GeneratePointY = BossGeneratePos.y;
+        data.AppearPointY = BossAppearPos.y;
+        data.AppearPointX = BossAppearPos.x;
+        data.DisappearPointX = -15.0f;
+        data.DisappearPointY = 0.0f;
+
+        EnemyManager.GenerateEnemy(data);
     }
 }

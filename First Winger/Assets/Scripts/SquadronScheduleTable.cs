@@ -14,6 +14,7 @@ public struct SquadronScheduleDataStruct
 public class SquadronScheduleTable :TableLoader<SquadronScheduleDataStruct>
 {
     List<SquadronScheduleDataStruct> SquadronScheduledata = new List<SquadronScheduleDataStruct>();
+        
 
 
 
@@ -36,5 +37,10 @@ public class SquadronScheduleTable :TableLoader<SquadronScheduleDataStruct>
     public int GetDataCount()
     {
         return SquadronScheduledata.Count;
+    }
+    public void DebugTest()
+    {
+        for (int i = 0; i < SquadronScheduledata.Count; i++)
+            Debug.Log(SquadronScheduledata[i]);
     }
 }
