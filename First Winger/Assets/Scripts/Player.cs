@@ -49,24 +49,22 @@ public class Player : Actor
         InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
         if (isLocalPlayer)
             inGameSceneMain.Hero = this;
+        else
+            inGameSceneMain.OtherPlayer = this;
        if(isServer && isLocalPlayer)
         {
             Host = true;
             RpcSetHost();
         }
         
-        Transform startTrasnform;
-        if (Host)
+        
+        if (!Host)
         {
-            startTrasnform = inGameSceneMain.PlayerStartTransform1;
-        }
-        else
-        {
-            startTrasnform = inGameSceneMain.PlayerStartTrasform2;
+
             MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
             meshRenderer.material = ClientPlayerMaterial;
         }
-        SetPosition(startTrasnform.position);
+ 
         if(actorInstanceID != 0)
         {
             inGameSceneMain.ActorManager.Regist(ActorInstanceID, this);
@@ -78,7 +76,7 @@ public class Player : Actor
     {
         InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
         GameObject go = Resources.Load<GameObject>(PlayerHUDPath);
-        GameObject goInstance = Instantiate<GameObject>(go, inGameSceneMain.DamageManager.CanvasTransform);
+        GameObject goInstance = Instantiate<GameObject>(go, Camera.main.WorldToScreenPoint(transform.position),Quaternion.identity,inGameSceneMain.DamageManager.CanvasTransform);
         PlayerHUD playerHUD = goInstance.GetComponent<PlayerHUD>();
         playerHUD.Intialize(this);
     }
@@ -176,8 +174,8 @@ public class Player : Actor
             return;
         if (Host)
         {
-            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
-            bullet.Fire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex,FireTransform.position);
+            bullet.Fire(actorInstanceID,FireTransform.right, BulletSpeed, Damage);
         }
         else
         {
@@ -190,8 +188,8 @@ public class Player : Actor
             return;
         if(Host)
         {
-            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex);
-            bullet.Fire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex,FireTransform.position);
+            bullet.Fire(actorInstanceID,FireTransform.right, BulletSpeed, Damage);
 
         }
         else
@@ -229,15 +227,15 @@ public class Player : Actor
     public void CmdFireBomb(int ownerIntanceId, Vector3 firePosition, Vector3 direction, float speed, int damage)
 
     {
-        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex);
-        bullet.Fire(ownerIntanceId, firePosition, direction, speed, damage);
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex,firePosition);
+        bullet.Fire(ownerIntanceId,  direction, speed, damage);
         base.SetDirtyBit(1);
     }
     [Command]
     public void CmdFire(int ownerIntanceId, Vector3 firePosition, Vector3 direction, float speed, int damage)
     {
-        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
-        bullet.Fire(ownerIntanceId, firePosition, direction, speed, damage);
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex,firePosition);
+        bullet.Fire(ownerIntanceId,  direction, speed, damage);
         base.SetDirtyBit(1);
     }
     protected override void OnDead()

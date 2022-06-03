@@ -441,7 +441,7 @@ MonoBehaviour:
   m_LogLevel: 2
   m_PlayerPrefab: {fileID: 4493892734775335095, guid: 7a10777adf031f24ab3e8b907a0b5acc, type: 3}
   m_AutoCreatePlayer: 1
-  m_PlayerSpawnMethod: 0
+  m_PlayerSpawnMethod: 1
   m_OfflineScene: LoadingScene
   m_OnlineScene: InGame
   m_SpawnPrefabs:
@@ -453,6 +453,8 @@ MonoBehaviour:
   - {fileID: 4752842339947014308, guid: 9e71b1ea8c3632b458073a0861e65581, type: 3}
   - {fileID: 8031065500336520213, guid: 2377831cee622f94db4cea513650a118, type: 3}
   - {fileID: 6773418351098889601, guid: 0c48aac39c641784f979595e7b697268, type: 3}
+  - {fileID: 1633353340889972871, guid: f38351db2b7421f488c589cbf96f5284, type: 3}
+  - {fileID: 1633353340889972871, guid: 39ed553d29316524ebd1d36a1f25cf1a, type: 3}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:

@@ -96,12 +96,7 @@ public class Actor :  NetworkBehaviour
         {
             RpcDecreaseHP(value, damagePos);
         }
-        else
-        {
-            CmdDecreaseHP(value, damagePos);
-            if (isLocalPlayer)
-                InternalDecreaseHP(value, damagePos);
-        }
+     
 
     }
     protected virtual void InternalDecreaseHP(int value, Vector3 damagePos)

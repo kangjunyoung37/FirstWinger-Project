@@ -25,7 +25,6 @@ public class PanelManager : MonoBehaviour
         {
             Debug.LogError("RegistPanel Error! Already exist Type! PanelClassType" + PanelClassType.ToString());
         }
-        Debug.Log("RegistPanel is called! Type =" + PanelClassType.ToString() + ", basePanel" + basePanel.name);
 
         Panels.Add(PanelClassType, basePanel);
         return true;

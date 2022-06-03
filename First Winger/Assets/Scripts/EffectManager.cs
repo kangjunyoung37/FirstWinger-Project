@@ -32,8 +32,8 @@ public class EffectManager : MonoBehaviour
             Debug.LogError("GenerateEffect error" + index);
         }
         string filePath = effectFiles[index].filePath;
-        GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectCacheSystem.Archive(filePath);
-        go.transform.position = position;
+        GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectCacheSystem.Archive(filePath,position);
+        
 
         AutoCachableEffect effect = go.GetComponent<AutoCachableEffect>(); 
         effect.FilePath = filePath;

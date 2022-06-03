@@ -17,7 +17,7 @@ public enum GameState : int
 [System.Serializable]
 public class InGameNetwrokTransfer : NetworkBehaviour
 {
-    const float  GameReadyIntaval = 3.0f;
+    const float  GameReadyIntaval = 1.0f;
     [SyncVar]
     GameState currentGameState = GameState.None;
     public GameState CurrentGameState
@@ -63,6 +63,16 @@ public class InGameNetwrokTransfer : NetworkBehaviour
     {
         currentGameState = GameState.Running;
     }
-
+    [ClientRpc]
+    public void RpcGameEnd(bool success)
+    {
+        currentGameState = GameState.End;
+        GameEndPanel gameEndPanel = PanelManager.GetPanel(typeof(GameEndPanel)) as GameEndPanel;
+        gameEndPanel.ShowGameEnd(success);
+    }
+    public void SetGameStateEnd()
+    {
+        currentGameState= GameState.End; 
+    }
 
 }

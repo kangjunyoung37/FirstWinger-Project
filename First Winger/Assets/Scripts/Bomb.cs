@@ -69,9 +69,9 @@ public class Bomb : Bullet
     }
 
 
-    public override void Fire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    public override void Fire(int ownerIntanceID,Vector3 direction, float speed, int damage)
     {
-       base.Fire(ownerIntanceID, firePosition, direction, speed, damage);
+       base.Fire(ownerIntanceID, direction, speed, damage);
         
         AddForce(Force);
     }

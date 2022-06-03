@@ -13,11 +13,11 @@ public class Bullet : NetworkBehaviour
 
     [SyncVar]
     [SerializeField]
-    Vector3 MoveDirection = Vector3.zero;
+    protected Vector3 MoveDirection = Vector3.zero;
 
     [SyncVar]
     [SerializeField]
-    float Speed = 0.0f;
+    protected float Speed = 0.0f;
     [SyncVar]
     protected bool NeedMove = false;
    
@@ -25,7 +25,7 @@ public class Bullet : NetworkBehaviour
     bool Hited = false;
     
     [SyncVar]
-    float FiredTime;
+    protected float FiredTime;
     
     [SyncVar]
     [SerializeField]
@@ -77,44 +77,44 @@ public class Bullet : NetworkBehaviour
 
     }
 
-    void InternelFire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    void InternelFire(int ownerIntanceID,Vector3 direction, float speed, int damage)
     {
         OwnerInstanceID = ownerIntanceID;
-        SetPosition(firePosition);
-        transform.position = firePosition;
+        
+        
         MoveDirection = direction;
         Speed = speed;
         Damage = damage;
         NeedMove = true;
         FiredTime = Time.time;
     }
-    public virtual void Fire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    public virtual void Fire(int ownerIntanceID, Vector3 direction, float speed, int damage)
     {
         if (isServer)
         {
-            RpcFire(ownerIntanceID, firePosition, direction, speed, damage);
+            RpcFire(ownerIntanceID,  direction, speed, damage);
         }
         else
         {
-            CmdFire(ownerIntanceID, firePosition, direction, speed, damage);
+            CmdFire(ownerIntanceID, direction, speed, damage);
             if (isLocalPlayer)
-                InternelFire(ownerIntanceID, firePosition, direction, speed, damage);
+                InternelFire(ownerIntanceID,direction, speed, damage);
         }
         //UpdateNetworkBullet();
     }
     [Command]
-    public void CmdFire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    public void CmdFire(int ownerIntanceID, Vector3 direction, float speed, int damage)
     {
-        InternelFire(ownerIntanceID, firePosition, direction, speed, damage);
+        InternelFire(ownerIntanceID,  direction, speed, damage);
         base.SetDirtyBit(1);
     }
     [ClientRpc]
-    public void RpcFire(int ownerIntanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    public void RpcFire(int ownerIntanceID,  Vector3 direction, float speed, int damage)
     {
-        InternelFire(ownerIntanceID, firePosition, direction, speed, damage);
+        InternelFire(ownerIntanceID,direction, speed, damage);
         base.SetDirtyBit(1);
     }
-    Vector3 AdjustMove(Vector3 moveVector)
+    protected Vector3 AdjustMove(Vector3 moveVector)
     {
         RaycastHit hitInfo;
        if( Physics.Linecast(transform.position,transform.position+moveVector ,out hitInfo ))

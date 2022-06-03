@@ -81,7 +81,15 @@ public class FWNetworkManager : NetworkManager
 
     public override void OnClientDisconnect(NetworkConnection conn)
     {
-        Debug.Log("OnClientDisconnect" + conn.hostId);
+        if(!isServer)
+        {
+            InGameSceneMain inGameScene = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+            if(inGameScene.CurrentGameState == GameState.End)
+            {
+                inGameScene.GotoTitleScene();
+                return;
+            }
+        }
         base.OnClientDisconnect(conn);
     }
 

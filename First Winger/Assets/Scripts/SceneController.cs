@@ -99,4 +99,8 @@ public class SceneController : MonoBehaviour
     {
         Debug.Log("OnSceneUnloaded is called" + scene.name);
     }
+    public void LoadSceneImmediate(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 }

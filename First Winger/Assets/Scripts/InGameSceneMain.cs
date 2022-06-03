@@ -41,7 +41,12 @@ public class InGameSceneMain : BaseSceneMain
             player = value;
         }
     }
-
+    Player otherPlayer;
+    public Player OtherPlayer
+    {
+        get { return otherPlayer; }
+        set { otherPlayer = value; }
+    }
     GamePointAccumlator gamePointAccumlator = new GamePointAccumlator();
 
     public GamePointAccumlator GamePointAccumlator
@@ -120,35 +125,25 @@ public class InGameSceneMain : BaseSceneMain
     //{
     //    SceneStartTime = Time.time;
     //}
-    //protected override void UpdateScene()
-    //{
-    //    base.UpdateScene();
-
-    //    float currentTime = Time.time;
-    //    if(currentGameState == GameState.Ready)
-    //    {
-    //        if(currentTime-SceneStartTime > GameReadyIntaval)
-    //        {
-    //            //SquadronManager.StartGame();
-    //            currentGameState = GameState.Running;
-    //        }
-    //    }
-    //}
-
-    [SerializeField]
-    Transform playerStartTransform1;
-    public Transform PlayerStartTransform1
+    protected override void UpdateScene()
     {
-        get { return playerStartTransform1; }
+        base.UpdateScene();
+
+        
+        if (CurrentGameState == GameState.Running)
+        {
+            if(Hero!= null && OtherPlayer != null)
+            {
+                if(Hero.IsDead && OtherPlayer.IsDead)
+                {
+                    NetworkTransfer.SetGameStateEnd();
+                    OnGameEnd(false);
+                }
+            }
+        }
     }
 
-    [SerializeField]
-    Transform playerStartTrasform2;
-    public Transform PlayerStartTrasform2
-    {
-        get { return playerStartTrasform2; }
 
-    }
 
     [SerializeField]
     InGameNetwrokTransfer inGameNetwrokTransfer;
@@ -199,5 +194,17 @@ public class InGameSceneMain : BaseSceneMain
         data.DisappearPointY = 0.0f;
 
         EnemyManager.GenerateEnemy(data);
+    }
+    public void OnGameEnd(bool success)
+    {
+        if(((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            NetworkTransfer.RpcGameEnd(success);
+    }
+    public void GotoTitleScene()
+    {
+        FWNetworkManager.Shutdown();//네트워크 끊기
+        DestroyImmediate(SystemManager.Instance.gameObject);
+        SceneController.Instance.LoadSceneImmediate(SceneNameConstants.TitleScene);
+
     }
 }

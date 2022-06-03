@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LoadingSceneMain : BaseSceneMain
 {
-    const float NextSceneIntaval = 3.0f;
+    const float NextSceneIntaval = 1f;
     const float TextUpdateIntaval = 0.15f;
     const string LoadingTextValue = "Loading...";
 
@@ -51,13 +51,13 @@ public class LoadingSceneMain : BaseSceneMain
         NetworkConnectionifo info = SystemManager.Instance.Connectioninfo;
         if (info.host)//호스트로 시작
         {
-            Debug.Log("FW Start with host");
+
             FWNetworkManager.singleton.StartHost();
         }
 
-        else
+        else//클라이언트로 시작
         {
-            Debug.Log("FW Start with Client");//클라이언트로 시작
+
 
             if (!string.IsNullOrEmpty(info.IPAdress))
             {

@@ -91,6 +91,13 @@ public class Enemy : Actor
             inGameSceneMain.ActorManager.Regist(actorInstanceID, this);
         }
     }
+    protected virtual int BulletIndex
+    {
+        get
+        {
+            return BulletManager.EnemyBulletIndex;
+        }
+    }
     protected override void UpdateActor()
     {
         switch (CurrentState)
@@ -268,9 +275,9 @@ public class Enemy : Actor
     }
     public void Fire()
     { 
-        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.EnemyBulletIndex);
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletIndex, FireTransform.position);
         if(bullet)
-            bullet.Fire(actorInstanceID, FireTransform.position, -FireTransform.right, BulletSpeed,Damage);
+            bullet.Fire(actorInstanceID, -FireTransform.right, BulletSpeed,Damage);
     }
 
     protected override void OnDead()

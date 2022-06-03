@@ -28,12 +28,11 @@ public class EnemyManager : MonoBehaviour
         
 
         string FilePath = SystemManager.Instance.EnemyTable.GetEnemy(data.EnemyID).FilePath;
-        GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.Archive(FilePath);
+        GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.Archive(FilePath, new Vector3(data.GeneratePointX, data.GeneratePointY, 0));
 
-        //go.transform.position = new Vector3(data.GeneratePointX, data.GeneratePointY,0);
         
         Enemy enemy = go.GetComponent<Enemy>();
-        enemy.SetPosition(new Vector3(data.GeneratePointX,data.GeneratePointY,0));
+      
         enemy.Reset(data);
         enemy.AddList();
         return true;
